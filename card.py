@@ -15,10 +15,10 @@ class Card:
         self.desc  = desc
         self.value = value
 
-    def getDesc(self):
+    def get_desc(self):
         return self.desc
 
-    def getValue(self):
+    def get_value(self):
         return self.value
 
 

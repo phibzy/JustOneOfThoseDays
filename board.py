@@ -3,8 +3,9 @@
 """
 Represents the board of the game
 Keeps track of the current game state
-
 """
+
+from player import Player
 
 class Board:
 
@@ -20,10 +21,12 @@ class Board:
         # Create the game deck here
         self.deck = deck
 
-    def drawCard(self):
+    def draw_card(self):
         pass
 
-    def nextTurn(self):
+    
+    def next_turn(self):
         pass
 
-
+    def next_guesser(self):
+        pass

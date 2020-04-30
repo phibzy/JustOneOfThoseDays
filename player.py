@@ -6,6 +6,8 @@ Keeps track of what/how many cards they have
 
 """
 
+from card import Card
+
 class Player:
 
     # Attributes
@@ -16,24 +18,24 @@ class Player:
     def __init__(self, name, cards):
         self.cards = cards
         self.name = name
-        self.numCards = 1 # Each player starts with one card
+        self.numCards = 3 # Each player starts with three cards
                           # Possibly change this to 0 depending on how first card is handled
 
     # Our getter methods
-    def getCards(self):
+    def get_cards(self):
         pass
 
-    def getName(self):
+    def get_name(self):
         return self.name
 
-    def getNumCards(self):
+    def get_numCards(self):
         return self.numCards
 
     # Adds card to Player's faceup cards if they guess correctly
-    def gainCard(self, newCard):
+    def gain_card(self, newCard):
         self.cards.append(newCard) # Want to insert it in order
         self.numCards += 1
 
     # Method for checking where card lies in range of Player's cards
-    def checkCard(self, newCard):
+    def check_card(self, newCard):
         pass

@@ -4,18 +4,19 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-Board	Board.py	/^class Board:$/;"	c
+Board	board.py	/^class Board:$/;"	c
 Card	Card.py	/^class Card:$/;"	c
 Player	Player.py	/^class Player:$/;"	c
-__init__	Board.py	/^    def __init__(self, players, deck):$/;"	m	class:Board
 __init__	Card.py	/^    def __init__(self, desc, value):$/;"	m	class:Card
 __init__	Player.py	/^    def __init__(self, name, cards):$/;"	m	class:Player
-checkCard	Player.py	/^    def checkCard(self, newCard):$/;"	m	class:Player
-drawCard	Board.py	/^    def drawCard(self):$/;"	m	class:Board
-gainCard	Player.py	/^    def gainCard(self, newCard):$/;"	m	class:Player
-getCards	Player.py	/^    def getCards(self):$/;"	m	class:Player
-getDesc	Card.py	/^    def getDesc(self):$/;"	m	class:Card
-getName	Player.py	/^    def getName(self):$/;"	m	class:Player
-getNumCards	Player.py	/^    def getNumCards(self):$/;"	m	class:Player
-getValue	Card.py	/^    def getValue(self):$/;"	m	class:Card
-nextTurn	Board.py	/^    def nextTurn(self):$/;"	m	class:Board
+__init__	board.py	/^    def __init__(self, players, deck):$/;"	m	class:Board
+check_card	Player.py	/^    def check_card(self, newCard):$/;"	m	class:Player
+draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
+gain_card	Player.py	/^    def gain_card(self, newCard):$/;"	m	class:Player
+get_cards	Player.py	/^    def get_cards(self):$/;"	m	class:Player
+get_desc	Card.py	/^    def get_desc(self):$/;"	m	class:Card
+get_name	Player.py	/^    def get_name(self):$/;"	m	class:Player
+get_numCards	Player.py	/^    def get_numCards(self):$/;"	m	class:Player
+get_value	Card.py	/^    def get_value(self):$/;"	m	class:Card
+next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
+next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
