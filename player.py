@@ -15,26 +15,29 @@ class Player:
     # name      - the player's name
     # numCards  - an int with number of cards player has
     
-    def __init__(self, name, cards):
-        self.cards = cards
-        self.name = name
-        self.numCards = 3 # Each player starts with three cards
+    def __init__(self, name: str, cards):
+        self.__cards = cards
+        self.__name = name
+        self.__num_cards = 3 # Each player starts with three cards
                           # Possibly change this to 0 depending on how first card is handled
 
     # Our getter methods
-    def get_cards(self):
-        pass
+    @property
+    def cards(self):
+        return self.__cards 
 
-    def get_name(self):
-        return self.name
+    @property
+    def name(self):
+        return self.__name
 
-    def get_numCards(self):
-        return self.numCards
+    @property
+    def num_cards(self):
+        return self.__num_cards
 
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, newCard):
-        self.cards.append(newCard) # Want to insert it in order
-        self.numCards += 1
+        self.__cards.append(newCard) # Want to insert it in order
+        self.__num_cards += 1
 
     # Method for checking where card lies in range of Player's cards
     def check_card(self, newCard):

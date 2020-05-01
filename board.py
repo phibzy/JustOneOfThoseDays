@@ -17,6 +17,7 @@ class Board:
 
     # Note - for python OO, _ before variable name is used to denote private attributes
 
+    # Pythonic way to do getters/setters is using "property"
 
 
     # Attributes
@@ -26,19 +27,20 @@ class Board:
 
     # Initialiser/constructor
     def __init__(self):
-        self.players = self.initialise_players()
+        self.__players = self.initialise_players()
 
         # Create the game deck here
-        self.deck = self.initialise_deck()
+        self.__deck = self.initialise_deck()
         
         # Choose starting player
-        self.current_player = None#self.players[0]
+        self.__current_player = None#self.players[0]
 
     def draw_card(self):
         pass
 
-    def get_deck(self):
-        returnDeck = [(i.get_desc, i.get_value) for i in self.deck]
+    @property
+    def deck(self):
+        returnDeck = [(i.desc, i.value) for i in self.__deck]
 
         return returnDeck
 

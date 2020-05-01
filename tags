@@ -9,18 +9,18 @@ Card	card.py	/^class Card:$/;"	c
 Player	player.py	/^class Player:$/;"	c
 __init__	board.py	/^    def __init__(self):$/;"	m	class:Board
 __init__	card.py	/^    def __init__(self, desc, value):$/;"	m	class:Card
-__init__	player.py	/^    def __init__(self, name, cards):$/;"	m	class:Player
+__init__	player.py	/^    def __init__(self, name: str, cards):$/;"	m	class:Player
 board	main.py	/^board = Board()$/;"	v
+cards	player.py	/^    def cards(self):$/;"	m	class:Player
 check_card	player.py	/^    def check_card(self, newCard):$/;"	m	class:Player
+deck	board.py	/^    def deck(self):$/;"	m	class:Board
+desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 gain_card	player.py	/^    def gain_card(self, newCard):$/;"	m	class:Player
-get_cards	player.py	/^    def get_cards(self):$/;"	m	class:Player
-get_deck	board.py	/^    def get_deck(self):$/;"	m	class:Board
-get_desc	card.py	/^    def get_desc(self):$/;"	m	class:Card
-get_name	player.py	/^    def get_name(self):$/;"	m	class:Player
-get_numCards	player.py	/^    def get_numCards(self):$/;"	m	class:Player
-get_value	card.py	/^    def get_value(self):$/;"	m	class:Card
 initialise_deck	board.py	/^    def initialise_deck(self):$/;"	m	class:Board
 initialise_players	board.py	/^    def initialise_players(self):$/;"	m	class:Board
+name	player.py	/^    def name(self):$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
+num_cards	player.py	/^    def num_cards(self):$/;"	m	class:Player
+value	card.py	/^    def value(self):$/;"	m	class:Card

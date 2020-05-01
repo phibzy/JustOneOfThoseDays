@@ -12,13 +12,15 @@ class Card:
     # value - The misery index value assigned to this card (float)
 
     def __init__(self, desc, value):
-        self.desc  = desc
-        self.value = value
+        self.__desc  = desc
+        self.__value = value
 
-    def get_desc(self):
-        return self.desc
+    @property
+    def desc(self):
+        return self.__desc
 
-    def get_value(self):
-        return self.value
+    @property
+    def value(self):
+        return self.__value
 
 
