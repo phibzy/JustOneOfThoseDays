@@ -7,6 +7,7 @@ Keeps track of what/how many cards they have
 """
 
 from card import Card
+from typing import List
 
 class Player:
 
@@ -27,11 +28,11 @@ class Player:
         return self.__cards 
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def num_cards(self):
+    def num_cards(self) -> int:
         return self.__num_cards
 
     # Adds card to Player's faceup cards if they guess correctly
@@ -39,6 +40,6 @@ class Player:
         self.__cards.append(newCard) # Want to insert it in order
         self.__num_cards += 1
 
-    # Method for checking where card lies in range of Player's cards
-    def check_card(self, newCard):
+    # Will probably need a guess place
+    def guess_range(self, desc: str) -> List[int]:
         pass

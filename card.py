@@ -11,7 +11,7 @@ class Card:
     # desc  - A description of the unfortunate scenario on said card
     # value - The misery index value assigned to this card (float)
 
-    def __init__(self, desc, value):
+    def __init__(self, desc: str, value: float):
         self.__desc  = desc
         self.__value = value
 

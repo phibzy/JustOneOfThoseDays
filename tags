@@ -8,19 +8,19 @@ Board	board.py	/^class Board:$/;"	c
 Card	card.py	/^class Card:$/;"	c
 Player	player.py	/^class Player:$/;"	c
 __init__	board.py	/^    def __init__(self):$/;"	m	class:Board
-__init__	card.py	/^    def __init__(self, desc, value):$/;"	m	class:Card
+__init__	card.py	/^    def __init__(self, desc: str, value: float):$/;"	m	class:Card
 __init__	player.py	/^    def __init__(self, name: str, cards):$/;"	m	class:Player
+__initialise_deck	board.py	/^    def __initialise_deck(self):$/;"	m	class:Board	file:
+__initialise_players	board.py	/^    def __initialise_players(self):$/;"	m	class:Board	file:
 board	main.py	/^board = Board()$/;"	v
 cards	player.py	/^    def cards(self):$/;"	m	class:Player
-check_card	player.py	/^    def check_card(self, newCard):$/;"	m	class:Player
-deck	board.py	/^    def deck(self):$/;"	m	class:Board
+deck	board.py	/^    def deck(self) -> List[Tuple[str, int]]:$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 gain_card	player.py	/^    def gain_card(self, newCard):$/;"	m	class:Player
-initialise_deck	board.py	/^    def initialise_deck(self):$/;"	m	class:Board
-initialise_players	board.py	/^    def initialise_players(self):$/;"	m	class:Board
-name	player.py	/^    def name(self):$/;"	m	class:Player
+guess_range	player.py	/^    def guess_range(self, desc: str) -> List[int]:$/;"	m	class:Player
+name	player.py	/^    def name(self) -> str:$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
-num_cards	player.py	/^    def num_cards(self):$/;"	m	class:Player
+num_cards	player.py	/^    def num_cards(self) -> int:$/;"	m	class:Player
 value	card.py	/^    def value(self):$/;"	m	class:Card

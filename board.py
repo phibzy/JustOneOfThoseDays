@@ -7,6 +7,7 @@ Keeps track of the current game state
 
 from player import Player
 from card import Card
+from typing import List, Tuple
 import re
 import logging
 
@@ -15,36 +16,41 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 
 class Board:
 
-    # Note - for python OO, _ before variable name is used to denote private attributes
-
-    # Pythonic way to do getters/setters is using "property"
-
-
     # Attributes
     # players       - A list of Players, all the people playing the game
     # deck          - A list of Cards
-    # currentPlayer - The current Player for a given turn
+    # current_starter - The first player guessing for a particular round
+    # current_guesser - The current Player guessing
+    # num_players     - The number of Players
+
+    # May want dict keeping track of scores, as the board object is
+    # what will ultimately signal end of game
 
     # Initialiser/constructor
     def __init__(self):
-        self.__players = self.initialise_players()
+        self.__players = self.__initialise_players()
 
         # Create the game deck here
-        self.__deck = self.initialise_deck()
+        self.__deck = self.__initialise_deck()
         
         # Choose starting player
-        self.__current_player = None#self.players[0]
+        self.__current_starter = None#self.players[0]
+
+        # First guesser is the first starter
+        self.__current_guesser = None#self.players[0]
+
+        self.__num_players = len(self.__players)
 
     def draw_card(self):
         pass
 
     @property
-    def deck(self):
+    def deck(self) -> List[Tuple[str, int]]:
         returnDeck = [(i.desc, i.value) for i in self.__deck]
 
         return returnDeck
 
-    def initialise_deck(self):
+    def __initialise_deck(self):
         cardRegex = re.compile(r"^(.*) (.*\d)$")
         deck = list()
 
@@ -53,14 +59,16 @@ class Board:
             mo = cardRegex.search(line)
             newCard = Card(mo.group(1), mo.group(2)) 
             deck.append(newCard)
+
+        f1.close()
        
         return deck
 
-    def initialise_players(self):
+    def __initialise_players(self):
         return list()
     
     def next_guesser(self):
-        pass
+        
 
     def next_turn(self):
         pass
