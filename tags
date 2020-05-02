@@ -7,7 +7,7 @@
 Board	board.py	/^class Board:$/;"	c
 Card	card.py	/^class Card:$/;"	c
 Player	player.py	/^class Player:$/;"	c
-__init__	board.py	/^    def __init__(self):$/;"	m	class:Board
+__init__	board.py	/^    def __init__(self, players):$/;"	m	class:Board
 __init__	card.py	/^    def __init__(self, desc: str, value: float):$/;"	m	class:Card
 __init__	player.py	/^    def __init__(self, name: str, cards):$/;"	m	class:Player
 __initialise_deck	board.py	/^    def __initialise_deck(self):$/;"	m	class:Board	file:
@@ -18,7 +18,7 @@ deck	board.py	/^    def deck(self) -> List[Tuple[str, int]]:$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 gain_card	player.py	/^    def gain_card(self, newCard):$/;"	m	class:Player
-guess_range	player.py	/^    def guess_range(self, desc: str) -> List[int]:$/;"	m	class:Player
+guess_range	player.py	/^    def guess_range(self, desc: str) -> Tuple[float, float]:$/;"	m	class:Player
 name	player.py	/^    def name(self) -> str:$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board

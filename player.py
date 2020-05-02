@@ -7,7 +7,7 @@ Keeps track of what/how many cards they have
 """
 
 from card import Card
-from typing import List
+from typing import List, Tuple
 
 class Player:
 
@@ -40,6 +40,13 @@ class Player:
         self.__cards.append(newCard) # Want to insert it in order
         self.__num_cards += 1
 
+        if self.__num_cards == 10:
+            print("You win!")
+
     # Will probably need a guess place
-    def guess_range(self, desc: str) -> List[int]:
+    def guess_range(self, desc: str) -> Tuple[float, float]:
+        # Guess where in current card list new card will sit
+        # If at ends of list, use range of (0,x) or (x, 101)
+
+
         pass

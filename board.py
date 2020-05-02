@@ -16,19 +16,33 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 
 class Board:
 
+    # Game end conditions:
+    # Player obtains 10 cards
+    # Deck runs out of cards
+
+    # TODO:
+        # - Give players starting cards
+        # - Handle each round
+        # - Handling previous guesses properly
+
     # Attributes
-    # players       - A list of Players, all the people playing the game
-    # deck          - A list of Cards
-    # current_starter - The first player guessing for a particular round
-    # current_guesser - The current Player guessing
-    # num_players     - The number of Players
+    # current_guesser  - The current Player guessing
+    # current_leader   - Current player in the lead - tentative
+    # current_starter  - The first player guessing for a particular round
+    # deck             - A list of Cards
+    # num_players      - The number of Players
+    # players          - A list of Players, all the people playing the game
+    # previous_guesses - List of tuples containing range guesses of other players for current round
+        #Note: To handle end ranges, do (0,x) and (x, 101)
 
     # May want dict keeping track of scores, as the board object is
     # what will ultimately signal end of game
 
     # Initialiser/constructor
-    def __init__(self):
-        self.__players = self.__initialise_players()
+    def __init__(self, players):
+
+        # Players get passed in to class    
+        self.__players = players#self.__initialise_players()
 
         # Create the game deck here
         self.__deck = self.__initialise_deck()
@@ -41,8 +55,13 @@ class Board:
 
         self.__num_players = len(self.__players)
 
+        self.__previous_guesses = list()
+
     def draw_card(self):
-        pass
+        try:
+            return self.__deck.pop(0)
+        except IndexError:
+            print("No cards left - game over!")
 
     @property
     def deck(self) -> List[Tuple[str, int]]:
@@ -64,12 +83,21 @@ class Board:
        
         return deck
 
+    # Not used for now
     def __initialise_players(self):
         return list()
-    
+   
+    # Returns None when everyone has had a turn guessing
     def next_guesser(self):
+        self.__current_guesser += 1
+        self.__current_guesser = self.__current_guesser % self.__num_players
         
+        if (self.__current_guesser != self.__current_starter):
+            return self.__players[self.__current_guesser]
 
     def next_turn(self):
-        pass
+        self.__current_starter += 1
+        self.__current_starter = self.__current_starter % self.__num_players
+
+        return self.__players[self.__current_starter]
 
