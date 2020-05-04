@@ -16,11 +16,10 @@ class Player:
     # name      - the player's name
     # numCards  - an int with number of cards player has
     
-    def __init__(self, name: str, cards):
-        self.__cards = cards
+    def __init__(self, name: str):
+        self.__cards = []
         self.__name = name
-        self.__num_cards = 3 # Each player starts with three cards
-                          # Possibly change this to 0 depending on how first card is handled
+        self.__num_cards = 0 # Cards given when board is initialised 
 
     # Our getter methods
     @property
@@ -37,7 +36,15 @@ class Player:
 
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, newCard):
-        self.__cards.append(newCard) # Want to insert it in order
+        if self.__cards == [] or newCard.value > self.__cards[-1].value:
+            self.__cards.append(newCard)
+
+        else:
+            for i, listCard in enumerate(self.__cards):
+                if newCard.value <= listCard.value:
+                    self.__cards.insert(i, newCard)
+                    break
+
         self.__num_cards += 1
 
         if self.__num_cards == 10:

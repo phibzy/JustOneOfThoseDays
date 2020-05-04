@@ -8,20 +8,23 @@ Keeps track of the current game state
 from player import Player
 from card import Card
 from typing import List, Tuple
-import re
+import random, re
 import logging
+import pprint
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 # logging.disable(logging.DEBUG)
 
 class Board:
 
+    STARTING_CARDS = 3
+
     # Game end conditions:
     # Player obtains 10 cards
     # Deck runs out of cards
 
     # TODO:
-        # - Give players starting cards
+        # - Handle individual guesses (player.guess_range, define board method for guess handling)
         # - Handle each round
         # - Handling previous guesses properly
 
@@ -42,20 +45,31 @@ class Board:
     def __init__(self, players):
 
         # Players get passed in to class    
-        self.__players = players#self.__initialise_players()
+        self.__players = players
 
         # Create the game deck here
         self.__deck = self.__initialise_deck()
+        random.shuffle(self.__deck)
         
         # Choose starting player
-        self.__current_starter = None#self.players[0]
-
-        # First guesser is the first starter
-        self.__current_guesser = None#self.players[0]
-
         self.__num_players = len(self.__players)
+        
+        if self.__num_players < 2:
+            raise Exception("Must have at least two players")
 
-        self.__previous_guesses = list()
+        # Give players their starting cards
+        self.__initialise_player_cards()    
+
+        # Shuffle players to have a random starter
+        random.shuffle(self.__players)
+        self.__current_starter = self.__players[0]
+        
+        # First guesser is the first starter
+        self.__current_guesser = self.__current_starter
+
+        self.__print_player_cards()
+
+        self.__previous_guesses = list() # Thinking might put this in gamestate
 
     def draw_card(self):
         try:
@@ -63,11 +77,10 @@ class Board:
         except IndexError:
             print("No cards left - game over!")
 
+    # For debugging purposes - will remove later
     @property
-    def deck(self) -> List[Tuple[str, int]]:
-        returnDeck = [(i.desc, i.value) for i in self.__deck]
-
-        return returnDeck
+    def deck(self):
+        return self.__deck
 
     def __initialise_deck(self):
         cardRegex = re.compile(r"^(.*) (.*\d)$")
@@ -83,9 +96,11 @@ class Board:
        
         return deck
 
-    # Not used for now
-    def __initialise_players(self):
-        return list()
+    def __initialise_player_cards(self):
+        # Each player draws 3 cards
+        for player in self.__players:
+            for _ in range(self.STARTING_CARDS):
+                player.gain_card(self.draw_card())
    
     # Returns None when everyone has had a turn guessing
     def next_guesser(self):
@@ -100,4 +115,13 @@ class Board:
         self.__current_starter = self.__current_starter % self.__num_players
 
         return self.__players[self.__current_starter]
+
+    ##### DEBUG METHODS ######
+    def __print_player_cards(self):
+        for player in self.__players:
+            print(f"Player {player.name}'s cards: ({player.num_cards} total)")
+            for card in player.cards:
+                print(f"{card.desc} - {card.value}")
+        
+
 
