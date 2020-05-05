@@ -63,6 +63,7 @@ class Player:
     def guess_range(self, desc: str) -> Tuple[float, float]:
         # Guess where in current card list new card will sit
         # If at ends of list, use range of (0,x) or (x, 101)
+        # Need checks for valid ranges as well - have the board use a hash table for that
 
         pass
 
