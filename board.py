@@ -89,7 +89,7 @@ class Board:
         f1 = open("card_list.txt")
         for line in f1.readlines():
             mo = cardRegex.search(line)
-            newCard = Card(mo.group(1), mo.group(2)) 
+            newCard = Card(mo.group(1), float(mo.group(2))) 
             deck.append(newCard)
 
         f1.close()

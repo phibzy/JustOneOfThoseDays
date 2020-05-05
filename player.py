@@ -8,6 +8,10 @@ Keeps track of what/how many cards they have
 
 from card import Card
 from typing import List, Tuple
+import bisect, logging
+
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+logging.disable(logging.DEBUG)
 
 class Player:
 
@@ -36,14 +40,19 @@ class Player:
 
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, newCard):
-        if self.__cards == [] or newCard.value > self.__cards[-1].value:
+        logging.debug("".rjust(10,'-'))
+        logging.debug(f"Player is {self.name}")
+        logging.debug(f"New card is {newCard.desc} - {newCard.value}")
+
+        logging.debug(f"Cardlist before insertion: {[(i.desc, i.value) for i in self.__cards]}")
+
+        if self.__cards == []:
             self.__cards.append(newCard)
 
         else:
-            for i, listCard in enumerate(self.__cards):
-                if newCard.value <= listCard.value:
-                    self.__cards.insert(i, newCard)
-                    break
+            bisect.insort(self.__cards, newCard)
+
+        logging.debug(f"Cardlist before insertion: {[(i.desc, i.value) for i in self.__cards]}")
 
         self.__num_cards += 1
 
@@ -55,5 +64,5 @@ class Player:
         # Guess where in current card list new card will sit
         # If at ends of list, use range of (0,x) or (x, 101)
 
-
         pass
+

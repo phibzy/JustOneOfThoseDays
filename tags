@@ -13,6 +13,7 @@ __init__	card.py	/^    def __init__(self, desc: str, value: float):$/;"	m	class:
 __init__	player.py	/^    def __init__(self, name: str):$/;"	m	class:Player
 __initialise_deck	board.py	/^    def __initialise_deck(self):$/;"	m	class:Board	file:
 __initialise_player_cards	board.py	/^    def __initialise_player_cards(self):$/;"	m	class:Board	file:
+__lt__	card.py	/^    def __lt__(self, other_card):$/;"	m	class:Card	file:
 __print_player_cards	board.py	/^    def __print_player_cards(self):$/;"	m	class:Board	file:
 board	main.py	/^board = Board(players)$/;"	v
 cards	player.py	/^    def cards(self):$/;"	m	class:Player
