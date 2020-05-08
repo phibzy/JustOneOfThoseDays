@@ -17,6 +17,8 @@ __lt__	card.py	/^    def __lt__(self, other_card):$/;"	m	class:Card	file:
 __print_player_cards	board.py	/^    def __print_player_cards(self):$/;"	m	class:Board	file:
 board	main.py	/^board = Board(players)$/;"	v
 cards	player.py	/^    def cards(self):$/;"	m	class:Player
+current_guesser	board.py	/^    def current_guesser(self):$/;"	m	class:Board
+current_starter	board.py	/^    def current_starter(self):$/;"	m	class:Board
 deck	board.py	/^    def deck(self):$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
@@ -27,4 +29,7 @@ next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
 num_cards	player.py	/^    def num_cards(self) -> int:$/;"	m	class:Player
 players	main.py	/^players = [ Player("Damo"), $/;"	v
+ranges	player.py	/^    def ranges(self):$/;"	m	class:Player
+testFrontInsert	test_range_insert.py	/^    def testFrontInsert(self):$/;"	m	class:testRangeInsert
+testRangeInsert	test_range_insert.py	/^class testRangeInsert(unittest.TestCase):$/;"	c
 value	card.py	/^    def value(self):$/;"	m	class:Card

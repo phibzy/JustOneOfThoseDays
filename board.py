@@ -23,6 +23,9 @@ class Board:
     # Player obtains 10 cards
     # Deck runs out of cards
 
+    # Game currently assumes that there will be no equal valued cards
+        # Or that if there are equal valued cards, you can end up with ranges like (5,7), (7,7), (7,10)
+
     # TODO:
         # - Handle individual guesses (player.guess_range, define board method for guess handling)
         # - Handle each round
@@ -78,9 +81,22 @@ class Board:
             print("No cards left - game over!")
 
     # For debugging purposes - will remove later
+    ###################################################
+
     @property
     def deck(self):
         return self.__deck
+
+    @property
+    def current_guesser(self):
+        return self.__current_guesser
+
+    @property
+    def current_starter(self):
+        return self.__current_starter
+
+    ###################################################
+
 
     def __initialise_deck(self):
         cardRegex = re.compile(r"^(.*) (.*\d)$")
