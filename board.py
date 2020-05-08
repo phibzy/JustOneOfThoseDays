@@ -75,6 +75,14 @@ class Board:
 
         self.__previous_guesses = list() # Thinking might put this in gamestate
 
+
+    
+    # This is the mumma function which will handle each turn
+    # Draw card -> first player guess -> ... -> until correct guess or back to first player again
+    def nextTurn(self):
+        pass
+
+
     def draw_card(self):
         try:
             return self.__deck.pop(0)
