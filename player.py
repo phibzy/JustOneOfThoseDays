@@ -19,6 +19,9 @@ class Player:
     # cards     - a list of current Cards faceup on table
     # name      - the player's name
     # numCards  - an int with number of cards player has
+
+    #TODO: Gamestate passed into guess_range, player gets options from gamestate
+           # Not sure if this is the best way though arrrrgghghghghgh
     
     def __init__(self, name: str):
         self.__cards  = []
@@ -54,15 +57,13 @@ class Player:
         if self.__cards == []:
             self.__cards.append(newCard)
             self.__ranges.append((0, newCard.value))
-            self.__ranges.append((newCard.value, 100))
+            self.__ranges.append((newCard.value, 100.0))
 
         else:
             insertIndex = bisect.bisect(self.__cards, newCard)
             
             logging.debug(f"insertIndex is: {insertIndex}")
             logging.debug(f"Ranges before insertion: {self.__ranges}")
-
-            #TODO: Breaks when inserting into position 0
 
             bisect.insort(self.__cards, newCard)
             self.__ranges[insertIndex] = (newCard.value, self.__ranges[insertIndex][1])
@@ -83,11 +84,22 @@ class Player:
 
     # May be best to seperate this from rest of class definition? - means others can't rewrite ranges etc.
     # Will probably need a guess place
+    # Possibly have board with an orderedDict that checks if player guess was one of the valid ranges
     def guess_range(self, desc: str) -> Tuple[float, float]:
         # Guess where in current card list new card will sit
         # If at ends of list, use range of (0,x) or (x, 100)
         # Need checks for valid ranges as well - have the board use a hash table for that
+        print("Choose from the following:")
 
+        """
+        ### HOW I'LL DO THIS ###
+        
+        Board prints out list of options, player enters numbered option
+
+        Will be better this way if we want to run AIs etc.
+
+
+        """
         # Dummy one could be guess range 0 <= first_card.val everytime
 
 

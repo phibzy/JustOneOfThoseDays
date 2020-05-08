@@ -30,6 +30,7 @@ class Board:
         # - Handle individual guesses (player.guess_range, define board method for guess handling)
         # - Handle each round
         # - Handling previous guesses properly
+        # - A game state (probably)
 
     # Attributes
     # current_guesser  - The current Player guessing
