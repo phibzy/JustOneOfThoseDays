@@ -23,9 +23,10 @@ deck	board.py	/^    def deck(self):$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 gain_card	player.py	/^    def gain_card(self, newCard):$/;"	m	class:Player
-guess_range	player.py	/^    def guess_range(self, desc: str) -> Tuple[float, float]:$/;"	m	class:Player
+game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
+guess_range	player.py	/^    def guess_range(self, desc: str) -> int:$/;"	m	class:Player
+handle_guess	board.py	/^    def handle_guess(self, newCard: Card) -> bool:$/;"	m	class:Board
 name	player.py	/^    def name(self) -> str:$/;"	m	class:Player
-nextTurn	board.py	/^    def nextTurn(self):$/;"	m	class:Board
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
 num_cards	player.py	/^    def num_cards(self) -> int:$/;"	m	class:Player

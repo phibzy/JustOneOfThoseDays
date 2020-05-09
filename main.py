@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python4
 
 from board import Board
 from player import Player

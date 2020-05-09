@@ -79,17 +79,18 @@ class Player:
 
         self.__num_cards += 1
 
-        if self.__num_cards == 10:
-            print("You win!")
-
     # May be best to seperate this from rest of class definition? - means others can't rewrite ranges etc.
     # Will probably need a guess place
     # Possibly have board with an orderedDict that checks if player guess was one of the valid ranges
-    def guess_range(self, desc: str) -> Tuple[float, float]:
-        # Guess where in current card list new card will sit
-        # If at ends of list, use range of (0,x) or (x, 100)
-        # Need checks for valid ranges as well - have the board use a hash table for that
-        print("Choose from the following:")
+    def guess_range(self, desc: str) -> int:
+        print(f"Card description: {desc}")
+        print("Where in the range of your card's values do you think this card lies?")
+        print("Choose a number from the following:")
+
+        for i, val in enumerate(self.__ranges):
+            print(f"{i}.) Between {val[0]} and {val[1]}")
+   
+        return 1 # Placeholder for now
 
         """
         ### HOW I'LL DO THIS ###
@@ -101,9 +102,6 @@ class Player:
 
         """
         # Dummy one could be guess range 0 <= first_card.val everytime
-
-
-        pass
 
 
 

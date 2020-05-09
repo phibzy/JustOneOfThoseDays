@@ -26,11 +26,20 @@ class Board:
     # Game currently assumes that there will be no equal valued cards
         # Or that if there are equal valued cards, you can end up with ranges like (5,7), (7,7), (7,10)
 
+    # TODO: A GAME STATE:
+        # - Hash with player names as key
+            # - num_cards for each player
+            # - list of cards for each player
+            # - list of ranges for each player
+
+        # - previous_guesses: list of guessed ranges. Reset at beginning of every turn
+        # - Current leader (maybe)
+
     # TODO:
         # - Handle individual guesses (player.guess_range, define board method for guess handling)
         # - Handle each round
         # - Handling previous guesses properly
-        # - A game state (probably)
+        # - A game state (probably) - DEFINITELY
 
     # Attributes
     # current_guesser  - The current Player guessing
@@ -50,10 +59,12 @@ class Board:
 
         # Players get passed in to class    
         self.__players = players
+        #TODO: Initialise game state
 
         # Create the game deck here
         self.__deck = self.__initialise_deck()
         random.shuffle(self.__deck)
+        self.__num_cards = len(self.__deck)
         
         # Choose starting player
         self.__num_players = len(self.__players)
@@ -79,15 +90,43 @@ class Board:
     
     # This is the mumma function which will handle each turn
     # Draw card -> first player guess -> ... -> until correct guess or back to first player again
-    def nextTurn(self):
-        pass
+    def game_turns(self):
+        while True:
+            newCard = self.draw_card()
 
+            if self.handle_guess(newCard):
+                if self.__num_cards == 0:
+                    break
+                    #TODO: Game over if cards run out
+
+                self.next_turn()
+
+            else:
+                self.next_guesser()
+
+            #TODO: Break when a player reaches 10 cards
+        
+        print("Game over! See ya later!")
+
+
+    def handle_guess(self, newCard: Card) -> bool:
+        player = self.__current_guesser
+        guessIndex = player.guess_range(newCard.desc) - 1
+        
+        if guessIndex < 0 or guessIndex > player.num_cards: 
+            print("Invalid option given, counts as wrong guess")
+            return False
+
+        guessedRange = player.ranges[guessIndex]
+        if guessedRange[0] <= newCard.value <= guessedRange[1]: 
+            player.gain_card(newCard)
+            return True
+
+        return False
 
     def draw_card(self):
-        try:
-            return self.__deck.pop(0)
-        except IndexError:
-            print("No cards left - game over!")
+        self.__num_cards -= 1
+        return self.__deck.pop(0)
 
     # For debugging purposes - will remove later
     ###################################################
@@ -132,12 +171,12 @@ class Board:
         self.__current_guesser += 1
         self.__current_guesser = self.__current_guesser % self.__num_players
         
-        if (self.__current_guesser != self.__current_starter):
-            return self.__players[self.__current_guesser]
+        return self.__players[self.__current_guesser]
 
     def next_turn(self):
         self.__current_starter += 1
         self.__current_starter = self.__current_starter % self.__num_players
+        self.__current_guesser = self.__current_starter
 
         return self.__players[self.__current_starter]
 
