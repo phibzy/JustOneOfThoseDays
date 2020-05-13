@@ -27,13 +27,6 @@ class Board:
     # Game currently assumes that there will be no equal valued cards
         # Or that if there are equal valued cards, you can end up with ranges like (5,7), (7,7), (7,10)
 
-    # TODO: A GAME STATE:
-        # - Hash with player names as key
-            # - Make sure player names unique - add 1 to their names if not unique
-            # - num_cards for each player
-            # - list of cards for each player
-            # - list of ranges for each player
-
         # - previous_guesses: list of guessed ranges. Reset at beginning of every turn
         # - Current leader (maybe)
 
@@ -69,6 +62,8 @@ class Board:
         self.__players         = list() 
         self.__current_guesser = None
         self.__current_starter = None
+
+        # Unlike other two "current" values, this will just be reference to player (since order doesn't matter)
         self.__current_leader  = None
         
         try:
@@ -94,10 +89,14 @@ class Board:
         while newCard:
 
             if self.handle_guess(newCard):
+                #TODO: Check if better than current leader
+                #TODO: Update current leader
+
+                if self.__current_guesser.hand.num_cards == 10:
+                    break
+
                 if self.__num_cards == 0:
                     break
-                    #TODO: Update current_leader
-                    #TODO: Game over if player reaches 10 cards
 
                 self.next_turn()
 
@@ -121,6 +120,8 @@ class Board:
         print("Where in the range of your card's values do you think this card lies?")
         print("Choose a number from the following:")
 
+        #TODO: print previous guesses somewhere, or handle it somehow
+
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
 
@@ -136,6 +137,10 @@ class Board:
             print("Your guess was correct! You gained a new card =D")
             player.hand.gain_card(newCard)
             return True
+        
+        # Add guessed range to previous guesses if wrong
+        else:
+            self.__previous_guesses.append(guessedRange)
 
         return False
 
