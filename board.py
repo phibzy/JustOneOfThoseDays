@@ -70,8 +70,9 @@ class Board:
             self.__initialise_players(players)
         except:
             print("Error - Not enough players. Minimum 2 required")
+            sys.exit()
 
-        self.__print_player_cards()
+        self.print_player_cards()
 
         self.__previous_guesses = list()
 
@@ -187,24 +188,31 @@ class Board:
 
     def __initialise_players(self, players):
         names = dict()
-        playerList = list()
-
-        i = 0
         length = len(players)
+        i = 0
 
         while i < length:
-            nextName = players[i]
-            a = 1
-            while nextName in names:
-               nextName += a
-               a += 1
-            i += 1
+            nextName = players[i].name
 
+            # If player doesn't have name, call them Gary
+            if not nextName:
+                nextName = "Gary"
+
+            # If player has same name, put a number on the end of their name
+            if nextName in names:
+                a = 2
+                while (nextName + str(a)) in names:
+                   a += 1
+                nextName += str(a)
+
+            players[i].name = nextName
+            self.__players.append(players[i])
+            
+            i += 1
             names[nextName] = True
-            self.__players.append(nextName)
 
         self.__num_players = len(self.__players)
-        
+
         if self.__num_players < 2:
             raise Exception("Must have at least two players")
 
@@ -248,7 +256,7 @@ class Board:
     ##### DEBUG METHODS ######
     def print_player_cards(self):
         for player in self.__players:
-            print(f"Player {player.name}'s cards: ({player.num_cards} total)")
+            print(f"Player {player.name}'s cards: ({player.hand.num_cards} total)")
             player.hand.print_hand() 
 
 
