@@ -25,7 +25,11 @@ class Board:
     # Deck runs out of cards
 
     # TODO:
-        # - Handling previous guesses properly
+        # - Testing for more than 2 players
+        # - Handling exceptions properly, printing out correct output/stacktrace
+        # - Implement timeout for player range guesses
+        # - GUI etc.
+        # - More cards + better way to implement cards?
 
     # Attributes
     # current_guesser  - The current Player guessing
@@ -102,8 +106,6 @@ class Board:
 
                 # Check victory conditions
                 new_card = self.game_over_check(guess_player)
-
-
        
         print("Game over!")
         

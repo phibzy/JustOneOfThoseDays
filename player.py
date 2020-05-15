@@ -37,12 +37,8 @@ class Player:
     def name(self, new_name):
         self.__name = new_name
 
+    # For human players, takes input from stdin
     def guess_range(self) -> int:
-        #TODO: Dummy version atm just returns first option everytime   
-
-        # For testing purposes
-        # sys.stdin.flush()
-        # time.sleep(10)
         guess = input()
 
         return guess # Placeholder for now
