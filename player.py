@@ -9,7 +9,7 @@ Keeps track of what/how many cards they have
 from card import Card
 from hand import Hand
 from typing import List, Tuple
-import bisect, logging
+import bisect, logging, sys, time
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 #logging.disable(logging.DEBUG)
@@ -41,6 +41,8 @@ class Player:
         #TODO: Dummy version atm just returns first option everytime   
 
         # For testing purposes
+        # sys.stdin.flush()
+        # time.sleep(10)
         guess = input()
 
         return guess # Placeholder for now

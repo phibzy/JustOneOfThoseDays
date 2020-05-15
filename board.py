@@ -98,21 +98,16 @@ class Board:
                     guess_player.hand.num_cards > self.__current_leader.hand.num_cards:
                         self.__current_leader = self.__players[self.__current_guesser]
 
-                if guess_player.hand.num_cards == 10:
-                    break
-
-                if self.__num_cards == 0:
-                    break
-
-                self.next_turn()
+                # Check victory conditions
+                newCard = self.game_over_check(guess_player)
 
             elif not self.next_guesser():
+                print(f"Everyone failed the guess. The correct value was {newCard.value}") 
                 self.__discard_pile.append(newCard)
-                try:
-                    newCard = self.draw_card()
-                except:
-                    print("No more cards in deck!")
-                    break
+
+                # Check victory conditions
+                newCard = self.game_over_check(guess_player)
+
 
        
         print("Game over!")
@@ -138,17 +133,17 @@ class Board:
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
 
-        try:
-            guessIndex = player.guess_range(newCard.desc) - 1
-        except:
-            print("Error - Invalid input, counts as wrong guess")
-            return False 
+        # try:
+        guessIndex = int(player.guess_range()) - 1
+        # except:
+            # print("Error - Invalid input, counts as wrong guess")
+            # return False 
 
-        if guessIndex < 0 or guessIndex > player.num_cards: 
+        if guessIndex < 0 or guessIndex > player.hand.num_cards: 
             print("Invalid option given, counts as wrong guess")
             return False
 
-        guessedRange = player.ranges[guessIndex]
+        guessedRange = player.hand.ranges[guessIndex]
         if guessedRange[0] <= newCard.value <= guessedRange[1]: 
             print("Your guess was correct! You gained a new card =D")
             player.hand.gain_card(newCard)
@@ -258,6 +253,7 @@ class Board:
         if self.__current_guesser == self.current_starter:
             return
         
+        # Inconsistent - will leave for now but later #TODO: Change to bool returns
         return self.__players[self.__current_guesser]
 
     def next_turn(self):
@@ -266,7 +262,19 @@ class Board:
         self.__current_guesser = self.__current_starter
         self.__previous_guesses = []
 
-        return self.__players[self.__current_starter]
+    # Returns None if game over, otherwise returns the next card for the game
+    def game_over_check(self, guess_player=None):
+        # Game Over Condition 1: If player reaches 10 cards
+        if guess_player is not None and \
+            guess_player.hand.num_cards == 10: return None
+
+        # Game Over Condition 2: If deck runs out of cards 
+        if self.__num_cards == 0: return None
+        
+        self.next_turn()
+
+        return self.draw_card() 
+
 
     ##### DEBUG METHODS ######
     def print_player_cards(self):
