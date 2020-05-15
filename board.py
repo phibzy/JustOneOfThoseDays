@@ -69,6 +69,7 @@ class Board:
         try:
             self.__initialise_players(players)
         except:
+            #TODO: Handle exceptions properly - i.e. displaying which exception occurred etc.
             print("Error - Not enough players. Minimum 2 required")
             sys.exit()
 
@@ -90,9 +91,13 @@ class Board:
             print("Game over - no one wins because there's not enough cards to start the game")
             sys.exit()
 
+        self.print_next_turn_text()
+
         while new_card:
             guess_player = self.__players[self.__current_guesser]
             print(f"{guess_player.name}'s turn to guess")
+            print(''.rjust(20, '>'))
+            print()
 
             if self.handle_guess(new_card):
                 if self.__current_leader is None or \
@@ -126,6 +131,7 @@ class Board:
         player = self.__players[self.__current_guesser]
 
         print(f"Card description: {new_card.desc}")
+        print()
         print("Where in the range of your card's values do you think this card lies?")
         print("Choose a number from the following:")
 
@@ -134,11 +140,12 @@ class Board:
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
 
-        # try:
-        guessIndex = int(player.guess_range()) - 1
-        # except:
-            # print("Error - Invalid input, counts as wrong guess")
-            # return False 
+        #TODO: Implement a timeout for answers that take longer than X seconds
+        try:
+            guessIndex = int(player.guess_range()) - 1
+        except:
+            print("Error - Invalid input, counts as wrong guess")
+            return False 
 
         if guessIndex < 0 or guessIndex > player.hand.num_cards: 
             print("Invalid option given, counts as wrong guess")
@@ -263,7 +270,14 @@ class Board:
         self.__current_starter = self.__current_starter % self.__num_players
         self.__current_guesser = self.__current_starter
         self.__previous_guesses = []
-        print(f"{self.__players[self.__current_starter]} will start the round...")
+
+        self.print_next_turn_text()
+
+    def print_next_turn_text(self):
+        print(''.rjust(30,'-'))
+        print(f"{self.__players[self.__current_starter].name} will start the round...")
+        print(''.rjust(30,'-'))
+        print()
 
     # Returns None if game over, otherwise returns the next card for the game
     def game_over_check(self, guess_player=None):
