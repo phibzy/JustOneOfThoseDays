@@ -34,8 +34,8 @@ class Player:
         return self.__name
 
     @name.setter
-    def name(self, newName):
-        self.__name = newName
+    def name(self, new_name):
+        self.__name = new_name
 
     def guess_range(self) -> int:
         #TODO: Dummy version atm just returns first option everytime   

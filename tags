@@ -29,9 +29,9 @@ game_over_check	board.py	/^    def game_over_check(self, guess_player=None):$/;"
 game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
 guess_range	player.py	/^    def guess_range(self) -> int:$/;"	m	class:Player
 hand	player.py	/^    def hand(self):$/;"	m	class:Player
-handle_guess	board.py	/^    def handle_guess(self, newCard):$/;"	m	class:Board
+handle_guess	board.py	/^    def handle_guess(self, new_card):$/;"	m	class:Board
 name	player.py	/^    def name(self):$/;"	m	class:Player
-name	player.py	/^    def name(self, newName):$/;"	m	class:Player
+name	player.py	/^    def name(self, new_name):$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
 num_cards	hand.py	/^    def num_cards(self):$/;"	m	class:Hand

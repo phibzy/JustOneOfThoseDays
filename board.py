@@ -85,28 +85,29 @@ class Board:
     def game_turns(self):
         
         try:
-            newCard = self.draw_card()
+            new_card = self.draw_card()
         except:
             print("Game over - no one wins because there's not enough cards to start the game")
             sys.exit()
 
-        while newCard:
+        while new_card:
+            guess_player = self.__players[self.__current_guesser]
+            print(f"{guess_player.name}'s turn to guess")
 
-            if self.handle_guess(newCard):
-                guess_player = self.__players[self.__current_guesser]
+            if self.handle_guess(new_card):
                 if self.__current_leader is None or \
                     guess_player.hand.num_cards > self.__current_leader.hand.num_cards:
                         self.__current_leader = self.__players[self.__current_guesser]
 
                 # Check victory conditions
-                newCard = self.game_over_check(guess_player)
+                new_card = self.game_over_check(guess_player)
 
             elif not self.next_guesser():
-                print(f"Everyone failed the guess. The correct value was {newCard.value}") 
-                self.__discard_pile.append(newCard)
+                print(f"Everyone failed the guess. The correct value was {new_card.value}") 
+                self.__discard_pile.append(new_card)
 
                 # Check victory conditions
-                newCard = self.game_over_check(guess_player)
+                new_card = self.game_over_check(guess_player)
 
 
        
@@ -121,10 +122,10 @@ class Board:
         print("See ya later!")
 
 
-    def handle_guess(self, newCard):
+    def handle_guess(self, new_card):
         player = self.__players[self.__current_guesser]
 
-        print(f"Card description: {newCard.desc}")
+        print(f"Card description: {new_card.desc}")
         print("Where in the range of your card's values do you think this card lies?")
         print("Choose a number from the following:")
 
@@ -144,13 +145,14 @@ class Board:
             return False
 
         guessedRange = player.hand.ranges[guessIndex]
-        if guessedRange[0] <= newCard.value <= guessedRange[1]: 
+        if guessedRange[0] <= new_card.value <= guessedRange[1]: 
             print("Your guess was correct! You gained a new card =D")
-            player.hand.gain_card(newCard)
+            player.hand.gain_card(new_card)
             return True
         
         # Add guessed range to previous guesses if wrong
         else:
+            print("Unfortunately your guess was incorrect =(")
             self.__previous_guesses.append(guessedRange)
 
         return False
@@ -189,8 +191,8 @@ class Board:
         f1 = open("card_list.txt")
         for line in f1.readlines():
             mo = cardRegex.search(line)
-            newCard = Card(mo.group(1), float(mo.group(2))) 
-            deck.append(newCard)
+            new_card = Card(mo.group(1), float(mo.group(2))) 
+            deck.append(new_card)
 
         f1.close()
        
@@ -261,6 +263,7 @@ class Board:
         self.__current_starter = self.__current_starter % self.__num_players
         self.__current_guesser = self.__current_starter
         self.__previous_guesses = []
+        print(f"{self.__players[self.__current_starter]} will start the round...")
 
     # Returns None if game over, otherwise returns the next card for the game
     def game_over_check(self, guess_player=None):
