@@ -24,15 +24,7 @@ class Board:
     # Player obtains 10 cards
     # Deck runs out of cards
 
-    # Game currently assumes that there will be no equal valued cards
-        # Or that if there are equal valued cards, you can end up with ranges like (5,7), (7,7), (7,10)
-
-        # - previous_guesses: list of guessed ranges. Reset at beginning of every turn
-        # - Current leader (maybe)
-
     # TODO:
-        # - Handle individual guesses (player.guess_range, define board method for guess handling)
-        # - Handle each round
         # - Handling previous guesses properly
 
     # Attributes
@@ -45,9 +37,6 @@ class Board:
     # players          - A list of Players, all the people playing the game
     # previous_guesses - List of tuples containing range guesses of other players for current round
         #Note: To handle end ranges, do (0,x) and (x, 101)
-
-    # May want dict keeping track of scores, as the board object is
-    # what will ultimately signal end of game
 
     # Initialiser/constructor
     def __init__(self, players):
@@ -131,11 +120,18 @@ class Board:
         player = self.__players[self.__current_guesser]
 
         print(f"Card description: {new_card.desc}")
+
+        if self.__previous_guesses:
+            print("Ranges guessed incorrectly by previous players:")
+            for g in self.__previous_guesses:
+                print(g, end=' ')
+
+            print()
+
         print()
         print("Where in the range of your card's values do you think this card lies?")
         print("Choose a number from the following:")
 
-        #TODO: print previous guesses somewhere, or handle it somehow
 
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
@@ -190,6 +186,9 @@ class Board:
 
     ###################################################
 
+
+    # Initialisation Functions
+    ###################################################
 
     def __initialise_deck(self):
         cardRegex = re.compile(r"^(.*) (.*\d)$")
@@ -253,6 +252,10 @@ class Board:
         for player in self.__players:
             for _ in range(self.STARTING_CARDS):
                 player.hand.gain_card(self.draw_card())
+    
+    ###################################################
+
+
    
     # Returns None when everyone has had a turn guessing
     def next_guesser(self):
