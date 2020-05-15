@@ -126,7 +126,10 @@ class Board:
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
 
-        guessIndex = player.guess_range(newCard.desc) - 1
+        try:
+            guessIndex = player.guess_range(newCard.desc) - 1
+        except:
+            print("Error - Invalid input, counts as wrong guess")
 
         #TODO: input checking (i.e. make sure it's an int)
         if guessIndex < 0 or guessIndex > player.num_cards: 
