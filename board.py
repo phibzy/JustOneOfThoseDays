@@ -96,7 +96,7 @@ class Board:
                 guess_player = self.__players[self.__current_guesser]
                 if self.__current_leader is None or \
                     guess_player.hand.num_cards > self.__current_leader.hand.num_cards:
-                        self.__current_leader = self.__current_guesser
+                        self.__current_leader = self.__players[self.__current_guesser]
 
                 if guess_player.hand.num_cards == 10:
                     break
@@ -115,8 +115,15 @@ class Board:
                     break
 
        
-        #TODO: Current leader is the winner!
-        print("Game over! See ya later!")
+        print("Game over!")
+        
+        if self.__current_leader is None:
+            print("No one wins!")
+
+        else:
+            print(f"{self.__current_leader.name} wins!")
+
+        print("See ya later!")
 
 
     def handle_guess(self, newCard):
