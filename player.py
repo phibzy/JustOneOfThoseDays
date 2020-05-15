@@ -39,7 +39,11 @@ class Player:
 
     def guess_range(self) -> int:
         #TODO: Dummy version atm just returns first option everytime   
-        return 1 # Placeholder for now
+
+        # For testing purposes
+        guess = input()
+
+        return guess # Placeholder for now
 
 
 

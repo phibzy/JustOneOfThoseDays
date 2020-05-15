@@ -34,7 +34,7 @@ name	player.py	/^    def name(self, newName):$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
 next_turn	board.py	/^    def next_turn(self):$/;"	m	class:Board
 num_cards	hand.py	/^    def num_cards(self):$/;"	m	class:Hand
-players	main.py	/^players = [ Player("Damo")$/;"	v
+players	main.py	/^players = [ Player("Damo"),$/;"	v
 print_hand	hand.py	/^    def print_hand(self):$/;"	m	class:Hand
 print_player_cards	board.py	/^    def print_player_cards(self):$/;"	m	class:Board
 ranges	hand.py	/^    def ranges(self):$/;"	m	class:Hand

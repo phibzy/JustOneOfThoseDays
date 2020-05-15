@@ -76,6 +76,9 @@ class Board:
 
         self.__previous_guesses = list()
 
+        # Run the actual game
+        self.game_turns()
+
 
     # This is the mumma function which will handle each turn
     # Draw card -> first player guess -> ... -> until correct guess or back to first player again
@@ -90,10 +93,12 @@ class Board:
         while newCard:
 
             if self.handle_guess(newCard):
-                #TODO: Check if better than current leader
-                #TODO: Update current leader
+                guess_player = self.__players[self.__current_guesser]
+                if self.__current_leader is None or \
+                    guess_player.hand.num_cards > self.__current_leader.hand.num_cards:
+                        self.__current_leader = self.__current_guesser
 
-                if self.__current_guesser.hand.num_cards == 10:
+                if guess_player.hand.num_cards == 10:
                     break
 
                 if self.__num_cards == 0:
@@ -115,7 +120,7 @@ class Board:
 
 
     def handle_guess(self, newCard):
-        player = self.__current_guesser
+        player = self.__players[self.__current_guesser]
 
         print(f"Card description: {newCard.desc}")
         print("Where in the range of your card's values do you think this card lies?")
@@ -130,8 +135,8 @@ class Board:
             guessIndex = player.guess_range(newCard.desc) - 1
         except:
             print("Error - Invalid input, counts as wrong guess")
+            return False 
 
-        #TODO: input checking (i.e. make sure it's an int)
         if guessIndex < 0 or guessIndex > player.num_cards: 
             print("Invalid option given, counts as wrong guess")
             return False
@@ -227,10 +232,10 @@ class Board:
 
         # Shuffle players to have a random starter
         random.shuffle(self.__players)
-        self.__current_starter = self.__players[0]
+        self.__current_starter = 0
 
         # First guesser is the first starter
-        self.__current_guesser = self.__current_starter
+        self.__current_guesser = 0
 
     def __initialise_player_cards(self):
         # Each player draws 3 cards
