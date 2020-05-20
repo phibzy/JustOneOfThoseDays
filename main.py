@@ -5,7 +5,8 @@ from player import Player
 import pprint
 
 players = [ Player("Damo"),
-            Player("Damo")
+            Player("Damo"),
+            Player("Pingaz")
           ]
 
 board = Board(players)

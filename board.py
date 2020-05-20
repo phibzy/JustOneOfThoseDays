@@ -19,13 +19,14 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 class Board:
 
     STARTING_CARDS = 3
+    MAX_PLAYERS = 8
 
     # Game end conditions:
     # Player obtains 10 cards
     # Deck runs out of cards
 
     # TODO:
-        # - Testing for more than 2 players
+        # - Set max players to 8 (or something else reasonable)
         # - Handling exceptions properly, printing out correct output/stacktrace
         # - Implement timeout for player range guesses
         # - GUI etc.
