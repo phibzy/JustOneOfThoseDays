@@ -7,7 +7,7 @@ Keeps track of the current game state
 
 from player import Player
 from card import Card
-from typing import List, Tuple
+from exceptions import NoCardError, NumPlayerError
 import random, re
 import logging
 import pprint

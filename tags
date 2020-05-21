@@ -8,6 +8,8 @@ Board	board.py	/^class Board:$/;"	c
 Card	card.py	/^class Card:$/;"	c
 Hand	hand.py	/^class Hand:$/;"	c
 MAX_PLAYERS	board.py	/^    MAX_PLAYERS = 8$/;"	v	class:Board
+NoCardError	exceptions.py	/^class NoCardError(Exception):$/;"	c
+NumPlayerError	exceptions.py	/^class NumPlayerError(Exception):$/;"	c
 Player	player.py	/^class Player:$/;"	c
 STARTING_CARDS	board.py	/^    STARTING_CARDS = 3$/;"	v	class:Board
 __init__	board.py	/^    def __init__(self, players):$/;"	m	class:Board
