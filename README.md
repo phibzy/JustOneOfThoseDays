@@ -16,7 +16,7 @@ This repeats until every player has had a guess or until someone guesses it corr
 If no one guesses correctly then the card is discarded and a new turn begins. 
 The first player to 10 face up cards on the table wins!
 
-#MVP
+# MVP
 - 2 Players
 - 100 cards
 - First to 5
