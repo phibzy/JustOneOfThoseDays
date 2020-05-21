@@ -6,6 +6,10 @@ import pprint
 
 players = [ Player("Damo"),
             Player("Damo"),
+            Player("Damo"),
+            Player("Damo"),
+            Player("Damo"),
+            Player("Damo"),
             Player("Pingaz")
           ]
 

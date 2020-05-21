@@ -38,7 +38,8 @@ class Player:
         self.__name = new_name
 
     # For human players, takes input from stdin
-    def guess_range(self) -> int:
+    def guess_range(self):
+        #TODO: timed input - if timer runs out before key is pressed return 0 or something
         guess = input()
 
         return guess # Placeholder for now

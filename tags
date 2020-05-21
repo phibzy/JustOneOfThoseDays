@@ -25,10 +25,11 @@ current_starter	board.py	/^    def current_starter(self):$/;"	m	class:Board
 deck	board.py	/^    def deck(self):$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
+end_game	board.py	/^    def end_game(self):$/;"	m	class:Board
 gain_card	hand.py	/^    def gain_card(self, newCard):$/;"	m	class:Hand
 game_over_check	board.py	/^    def game_over_check(self, guess_player=None):$/;"	m	class:Board
 game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
-guess_range	player.py	/^    def guess_range(self) -> int:$/;"	m	class:Player
+guess_range	player.py	/^    def guess_range(self):$/;"	m	class:Player
 hand	player.py	/^    def hand(self):$/;"	m	class:Player
 handle_guess	board.py	/^    def handle_guess(self, new_card):$/;"	m	class:Board
 name	player.py	/^    def name(self):$/;"	m	class:Player

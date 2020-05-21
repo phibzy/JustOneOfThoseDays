@@ -12,6 +12,7 @@ import random, re
 import logging
 import pprint
 import sys
+import traceback
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 # logging.disable(logging.DEBUG)
@@ -26,6 +27,7 @@ class Board:
     # Deck runs out of cards
 
     # TODO:
+        # - Change all generic Exception throwing/catching
         # - Set max players to 8 (or something else reasonable)
         # - Handling exceptions properly, printing out correct output/stacktrace
         # - Implement timeout for player range guesses
@@ -58,15 +60,17 @@ class Board:
         self.__current_starter = None
 
         # Unlike other two "current" values, this will just be reference to player (since order doesn't matter)
+        # Current leader is always one person, the first person to the highest score
         self.__current_leader  = None
         
         try:
             self.__initialise_players(players)
-        except:
+        except Exception as e:
             #TODO: Handle exceptions properly - i.e. displaying which exception occurred etc.
-            print("Error - Not enough players. Minimum 2 required")
-            sys.exit()
-
+            # traceback.print_tb(e.__traceback__)
+            print("Error - Initialise players screwed up")
+            self.end_game()
+            
         self.print_player_cards()
 
         self.__previous_guesses = list()
@@ -83,7 +87,7 @@ class Board:
             new_card = self.draw_card()
         except:
             print("Game over - no one wins because there's not enough cards to start the game")
-            sys.exit()
+            self.end_game()
 
         self.print_next_turn_text()
 
@@ -117,6 +121,7 @@ class Board:
             print(f"{self.__current_leader.name} wins!")
 
         print("See ya later!")
+        self.end_game()
 
 
     def handle_guess(self, new_card):
@@ -142,9 +147,10 @@ class Board:
         #TODO: Implement a timeout for answers that take longer than X seconds
         try:
             guessIndex = int(player.guess_range()) - 1
-        except:
+        except ValueError:
             print("Error - Invalid input, counts as wrong guess")
             return False 
+        #TODO: Timeout error
 
         if guessIndex < 0 or guessIndex > player.hand.num_cards: 
             print("Invalid option given, counts as wrong guess")
@@ -238,10 +244,7 @@ class Board:
             raise Exception("Must have at least two players")
 
         # Give players their starting cards
-        try:
-            self.__initialise_player_cards()    
-        except:
-            raise Exception("Not enough cards in deck")
+        self.__initialise_player_cards()    
 
         # Shuffle players to have a random starter
         random.shuffle(self.__players)
@@ -298,6 +301,9 @@ class Board:
 
         return self.draw_card() 
 
+    def end_game(self):
+        # Not sure how this will work later, functionalised it to make it easier
+        sys.exit()
 
     ##### DEBUG METHODS ######
     def print_player_cards(self):
