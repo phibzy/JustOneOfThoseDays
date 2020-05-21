@@ -5,7 +5,6 @@ from player import Player
 import pprint
 
 players = [ 
-            Player("Pingaz"),
             Player("Nookie")
           ]
 

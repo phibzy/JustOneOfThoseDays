@@ -27,9 +27,7 @@ class Board:
     # Deck runs out of cards
 
     # TODO:
-        # - Change all generic Exception throwing/catching
         # - Set max players to 8 (or something else reasonable)
-        # - Handling exceptions properly, printing out correct output/stacktrace
         # - Implement timeout for player range guesses
         # - GUI etc.
         # - More cards + better way to implement cards?
@@ -67,8 +65,8 @@ class Board:
             self.__initialise_players(players)
 
         # Game needs at least 2 players to start
-        except NumPlayerError:
-            print("Not enough players. At least 2 players are needed to start the game")        
+        except NumPlayerError as e:
+            print(e)
             self.end_game()
 
         # There also needs to be enough cards for each player to have a starting hand
@@ -246,7 +244,10 @@ class Board:
         self.__num_players = len(self.__players)
 
         if self.__num_players < 2:
-            raise NumPlayerError("Must have at least two players")
+            raise NumPlayerError("Error - Must have at least two players")
+
+        if self.__num_players > self.MAX_PLAYERS:
+            raise NumPlayerError(f"Error - Can't have more than {self.MAX_PLAYERS} players.")
 
         # Give players their starting cards
         self.__initialise_player_cards()    
