@@ -65,10 +65,15 @@ class Board:
         
         try:
             self.__initialise_players(players)
-        except Exception as e:
-            #TODO: Handle exceptions properly - i.e. displaying which exception occurred etc.
-            # traceback.print_tb(e.__traceback__)
-            print("Error - Initialise players screwed up")
+
+        # Game needs at least 2 players to start
+        except NumPlayerError:
+            print("Not enough players. At least 2 players are needed to start the game")        
+            self.end_game()
+
+        # There also needs to be enough cards for each player to have a starting hand
+        except NoCardError:
+            print("Not enough cards in the deck to be able to play the game")
             self.end_game()
             
         self.print_player_cards()
@@ -85,7 +90,7 @@ class Board:
         
         try:
             new_card = self.draw_card()
-        except:
+        except NoCardError:
             print("Game over - no one wins because there's not enough cards to start the game")
             self.end_game()
 
@@ -174,7 +179,7 @@ class Board:
             nextCard = self.__deck.pop()
             self.__num_cards -= 1
         except IndexError:
-            raise Exception("No more cards left in deck!")
+            raise NoCardError("No more cards left in deck!")
 
         return nextCard
 
@@ -241,7 +246,7 @@ class Board:
         self.__num_players = len(self.__players)
 
         if self.__num_players < 2:
-            raise Exception("Must have at least two players")
+            raise NumPlayerError("Must have at least two players")
 
         # Give players their starting cards
         self.__initialise_player_cards()    
@@ -271,7 +276,6 @@ class Board:
         if self.__current_guesser == self.current_starter:
             return
         
-        # Inconsistent - will leave for now but later #TODO: Change to bool returns
         return self.__players[self.__current_guesser]
 
     def next_turn(self):
