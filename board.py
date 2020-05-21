@@ -296,10 +296,14 @@ class Board:
     def game_over_check(self, guess_player=None):
         # Game Over Condition 1: If player reaches 10 cards
         if guess_player is not None and \
-            guess_player.hand.num_cards == 10: return None
+            guess_player.hand.num_cards == 10:
+                print(f"{guess_player.name} has 10 cards...")
+                return None
 
         # Game Over Condition 2: If deck runs out of cards 
-        if self.__num_cards == 0: return None
+        if self.__num_cards == 0:
+            print("There are no more cards left in the deck...")
+            return None
         
         self.next_turn()
 
