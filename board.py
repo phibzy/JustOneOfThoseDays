@@ -30,9 +30,13 @@ class Board:
     # Player obtains 10 cards
     # Deck runs out of cards
 
-    # TODO:
-        # - Implement timeout for player range guesses
+    # TODO: (MVP)
         # - At least 100 cards 
+
+    # TODO: (Stretch)
+        # - Database to handle cards   
+        # - GUI in browser
+        # - Timed input for non-stdin
         # - Network programming for multiplayer
 
     # Attributes

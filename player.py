@@ -45,9 +45,10 @@ class Player:
         # Stdin with timeout of 10 seconds
         guess = input_with_timeout('', 10)
 
-        return guess # Placeholder for now
+        return guess
 
-# courtesy of Stack Overflow user jfs
+# Courtesy of Stack Overflow user jfs
+# Handles timed input of stdin, raising exception when time expires
 def input_with_timeout(prompt, timeout):
     sys.stdout.write(prompt)
     sys.stdout.flush()

@@ -22,6 +22,7 @@ __initialise_player_cards	board.py	/^    def __initialise_player_cards(self):$/;
 __initialise_players	board.py	/^    def __initialise_players(self, players):$/;"	m	class:Board	file:
 __lt__	card.py	/^    def __lt__(self, other_card):$/;"	m	class:Card	file:
 board	main.py	/^board = Board(players)$/;"	v
+cardReg	sortCards.py	/^cardReg = re.compile(r"^(.*) (\\d.*)$")$/;"	v
 cards	hand.py	/^    def cards(self):$/;"	m	class:Hand
 current_guesser	board.py	/^    def current_guesser(self):$/;"	m	class:Board
 current_starter	board.py	/^    def current_starter(self):$/;"	m	class:Board
@@ -29,6 +30,8 @@ deck	board.py	/^    def deck(self):$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 end_game	board.py	/^    def end_game(self):$/;"	m	class:Board
+f1	sortCards.py	/^f1 = open("card_list", "w")$/;"	v
+f1	sortCards.py	/^f1 = open("card_list.txt")$/;"	v
 gain_card	hand.py	/^    def gain_card(self, newCard):$/;"	m	class:Hand
 game_over_check	board.py	/^    def game_over_check(self, guess_player=None):$/;"	m	class:Board
 game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
@@ -36,6 +39,7 @@ guess_range	player.py	/^    def guess_range(self):$/;"	m	class:Player
 hand	player.py	/^    def hand(self):$/;"	m	class:Player
 handle_guess	board.py	/^    def handle_guess(self, new_card):$/;"	m	class:Board
 input_with_timeout	player.py	/^def input_with_timeout(prompt, timeout):$/;"	f
+mo	sortCards.py	/^    mo = cardReg.search(line) $/;"	v
 name	player.py	/^    def name(self):$/;"	m	class:Player
 name	player.py	/^    def name(self, new_name):$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board
@@ -46,6 +50,7 @@ print_hand	hand.py	/^    def print_hand(self):$/;"	m	class:Hand
 print_next_turn_text	board.py	/^    def print_next_turn_text(self):$/;"	m	class:Board
 print_player_cards	board.py	/^    def print_player_cards(self):$/;"	m	class:Board
 ranges	hand.py	/^    def ranges(self):$/;"	m	class:Hand
+resultList	sortCards.py	/^resultList = list()$/;"	v
 testFrontInsert	test_range_insert.py	/^    def testFrontInsert(self):$/;"	m	class:testRangeInsert
 testRangeInsert	test_range_insert.py	/^class testRangeInsert(unittest.TestCase):$/;"	c
 value	card.py	/^    def value(self):$/;"	m	class:Card
