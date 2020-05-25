@@ -10,3 +10,6 @@ class NoCardError(Exception):
 
 class NumPlayerError(Exception):
     """Exception raised when there are too little/many players"""
+
+class TimeoutExpiredError(Exception):
+    """Exception raised when time expires on a user stdin prompt"""

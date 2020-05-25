@@ -6,6 +6,7 @@ import pprint
 
 players = [ 
             Player("Nookie")
+            , Player("Fred Durst")
           ]
 
 board = Board(players)

@@ -5,14 +5,18 @@ Represents the board of the game
 Keeps track of the current game state
 """
 
+# Project file imports
 from player import Player
 from card import Card
-from exceptions import NoCardError, NumPlayerError
+from exceptions import NoCardError, NumPlayerError, TimeoutExpiredError
+
+# Library imports
 import random, re
 import logging
 import pprint
 import sys
 import traceback
+import select
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 # logging.disable(logging.DEBUG)
@@ -27,10 +31,9 @@ class Board:
     # Deck runs out of cards
 
     # TODO:
-        # - Set max players to 8 (or something else reasonable)
         # - Implement timeout for player range guesses
-        # - GUI etc.
-        # - More cards + better way to implement cards?
+        # - At least 100 cards 
+        # - Network programming for multiplayer
 
     # Attributes
     # current_guesser  - The current Player guessing
@@ -65,6 +68,7 @@ class Board:
             self.__initialise_players(players)
 
         # Game needs at least 2 players to start
+        # Number of players also can't exceed MAX_PLAYERS
         except NumPlayerError as e:
             print(e)
             self.end_game()
@@ -147,13 +151,16 @@ class Board:
         for i, val in enumerate(player.hand.ranges):
             print(f"{i + 1}.) Between {val[0]} and {val[1]}")
 
-        #TODO: Implement a timeout for answers that take longer than X seconds
+        #TODO: In future version, implement timeout via multithreading when not reading stdin
+        #      Have to do it this way for now since input blocks everything else
         try:
             guessIndex = int(player.guess_range()) - 1
         except ValueError:
             print("Error - Invalid input, counts as wrong guess")
             return False 
-        #TODO: Timeout error
+        except TimeoutExpiredError:
+            print("Error - input timed out, counts as wrong guess")
+            return False
 
         if guessIndex < 0 or guessIndex > player.hand.num_cards: 
             print("Invalid option given, counts as wrong guess")

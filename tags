@@ -12,6 +12,7 @@ NoCardError	exceptions.py	/^class NoCardError(Exception):$/;"	c
 NumPlayerError	exceptions.py	/^class NumPlayerError(Exception):$/;"	c
 Player	player.py	/^class Player:$/;"	c
 STARTING_CARDS	board.py	/^    STARTING_CARDS = 3$/;"	v	class:Board
+TimeoutExpiredError	exceptions.py	/^class TimeoutExpiredError(Exception):$/;"	c
 __init__	board.py	/^    def __init__(self, players):$/;"	m	class:Board
 __init__	card.py	/^    def __init__(self, desc: str, value: float):$/;"	m	class:Card
 __init__	hand.py	/^    def __init__(self):$/;"	m	class:Hand
@@ -34,6 +35,7 @@ game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
 guess_range	player.py	/^    def guess_range(self):$/;"	m	class:Player
 hand	player.py	/^    def hand(self):$/;"	m	class:Player
 handle_guess	board.py	/^    def handle_guess(self, new_card):$/;"	m	class:Board
+input_with_timeout	player.py	/^def input_with_timeout(prompt, timeout):$/;"	f
 name	player.py	/^    def name(self):$/;"	m	class:Player
 name	player.py	/^    def name(self, new_name):$/;"	m	class:Player
 next_guesser	board.py	/^    def next_guesser(self):$/;"	m	class:Board

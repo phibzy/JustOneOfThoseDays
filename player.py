@@ -8,8 +8,10 @@ Keeps track of what/how many cards they have
 
 from card import Card
 from hand import Hand
-from typing import List, Tuple
-import bisect, logging, sys, time
+from exceptions import TimeoutExpiredError
+
+import bisect, logging, select, sys, time
+
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 #logging.disable(logging.DEBUG)
@@ -39,16 +41,19 @@ class Player:
 
     # For human players, takes input from stdin
     def guess_range(self):
-        #TODO: timed input - if timer runs out before key is pressed return 0 or something
-        guess = input()
+
+        # Stdin with timeout of 10 seconds
+        guess = input_with_timeout('', 10)
 
         return guess # Placeholder for now
 
-
-
-
-
-
-
+# courtesy of Stack Overflow user jfs
+def input_with_timeout(prompt, timeout):
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    ready, _, _ = select.select([sys.stdin], [],[], timeout)
+    if ready:
+        return sys.stdin.readline().rstrip('\n') # expect stdin to be line-buffered
+    raise TimeoutExpiredError
 
 
