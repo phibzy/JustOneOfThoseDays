@@ -6,7 +6,7 @@ A coded version of Stuff/S*** Happens by Goliath Games. I am in no way affiliate
 Each card has a misery index value on it between 0 and 100.
 1 is not very unpleasant, 100 is the most unpleasant thing possible. 
 Players start with three cards shown face up on "table".
-Players take turns drawing card. 
+Players take turns drawing a card. 
 Card's misery index value is hidden, only the unpleasant event on the card is revealed.
 The player to has to guess where in their face-up card ranges this new card lies. (e.g. where does it fit within the values of their own cards)
 If they correctly guess where it lies, they place it on the table face up in front of them. 
