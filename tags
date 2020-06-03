@@ -17,16 +17,10 @@ __init__	board.py	/^    def __init__(self, players):$/;"	m	class:Board
 __init__	card.py	/^    def __init__(self, desc: str, value: float):$/;"	m	class:Card
 __init__	hand.py	/^    def __init__(self):$/;"	m	class:Hand
 __init__	player.py	/^    def __init__(self, name):$/;"	m	class:Player
-__initialise_deck	board.py	/^    def __initialise_deck(self):$/;"	m	class:Board	file:
-__initialise_player_cards	board.py	/^    def __initialise_player_cards(self):$/;"	m	class:Board	file:
-__initialise_players	board.py	/^    def __initialise_players(self, players):$/;"	m	class:Board	file:
 __lt__	card.py	/^    def __lt__(self, other_card):$/;"	m	class:Card	file:
 board	main.py	/^board = Board(players)$/;"	v
 cardReg	sortCards.py	/^cardReg = re.compile(r"^(.*) (\\d.*)$")$/;"	v
 cards	hand.py	/^    def cards(self):$/;"	m	class:Hand
-current_guesser	board.py	/^    def current_guesser(self):$/;"	m	class:Board
-current_starter	board.py	/^    def current_starter(self):$/;"	m	class:Board
-deck	board.py	/^    def deck(self):$/;"	m	class:Board
 desc	card.py	/^    def desc(self):$/;"	m	class:Card
 draw_card	board.py	/^    def draw_card(self):$/;"	m	class:Board
 end_game	board.py	/^    def end_game(self):$/;"	m	class:Board
@@ -38,6 +32,9 @@ game_turns	board.py	/^    def game_turns(self):$/;"	m	class:Board
 guess_range	player.py	/^    def guess_range(self):$/;"	m	class:Player
 hand	player.py	/^    def hand(self):$/;"	m	class:Player
 handle_guess	board.py	/^    def handle_guess(self, new_card):$/;"	m	class:Board
+initialise_deck	board.py	/^    def initialise_deck(self):$/;"	m	class:Board
+initialise_player_cards	board.py	/^    def initialise_player_cards(self):$/;"	m	class:Board
+initialise_players	board.py	/^    def initialise_players(self, players):$/;"	m	class:Board
 input_with_timeout	player.py	/^def input_with_timeout(prompt, timeout):$/;"	f
 mo	sortCards.py	/^    mo = cardReg.search(line) $/;"	v
 name	player.py	/^    def name(self):$/;"	m	class:Player

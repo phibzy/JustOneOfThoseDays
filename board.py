@@ -27,11 +27,8 @@ class Board:
     MAX_PLAYERS = 8
 
     # Game end conditions:
-    # Player obtains 10 cards
-    # Deck runs out of cards
-
-    # TODO: (MVP)
-        # - At least 100 cards 
+        # Player obtains 10 cards
+        # Deck runs out of cards
 
     # TODO: (Stretch)
         # - Database to handle cards   
@@ -39,37 +36,36 @@ class Board:
         # - Timed input for non-stdin
         # - Network programming for multiplayer
 
-    # Attributes
-    # current_guesser  - The current Player guessing
-    # current_leader   - Current player in the lead - tentative
-    # current_starter  - The first player guessing for a particular round
-    # deck             - A list of Cards
-    # discard_pile     - List of discarded cards that no one guessed
-    # num_players      - The number of Players
-    # players          - A list of Players, all the people playing the game
-    # previous_guesses - List of tuples containing range guesses of other players for current round
-        #Note: To handle end ranges, do (0,x) and (x, 101)
+    # Attributes:
+        # current_guesser  - The current Player guessing
+        # current_leader   - Current player in the lead - tentative
+        # current_starter  - The first player guessing for a particular round
+        # deck             - A list of Cards
+        # discard_pile     - List of discarded cards that no one guessed
+        # num_players      - The number of Players
+        # players          - A list of Players, all the people playing the game
+        # previous_guesses - List of tuples containing range guesses of other players for current round
 
     # Initialiser/constructor
     def __init__(self, players):
 
         # Create the game deck + discard pile here
-        self.__discard_pile = list()
-        self.__deck = self.__initialise_deck()
-        random.shuffle(self.__deck)
-        self.__num_cards = len(self.__deck)
+        self.discard_pile = list()
+        self.deck = self.initialise_deck()
+        random.shuffle(self.deck)
+        self.num_cards = len(self.deck)
 
         # Players get passed in to class    
-        self.__players         = list() 
-        self.__current_guesser = None
-        self.__current_starter = None
+        self.players         = list() 
+        self.current_guesser = None
+        self.current_starter = None
 
         # Unlike other two "current" values, this will just be reference to player (since order doesn't matter)
         # Current leader is always one person, the first person to the highest score
-        self.__current_leader  = None
+        self.current_leader  = None
         
         try:
-            self.__initialise_players(players)
+            self.initialise_players(players)
 
         # Game needs at least 2 players to start
         # Number of players also can't exceed MAX_PLAYERS
@@ -82,67 +78,82 @@ class Board:
             print("Not enough cards in the deck to be able to play the game")
             self.end_game()
             
+        # Shows everyone's starting cards 
         self.print_player_cards()
 
-        self.__previous_guesses = list()
+        self.previous_guesses = list()
 
         # Run the actual game
         self.game_turns()
 
+    # Draws a card from the deck
+    def draw_card(self):
+        try:
+            nextCard = self.deck.pop()
+            self.num_cards -= 1
+        except IndexError:
+            raise NoCardError("No more cards left in deck!")
+
+        return nextCard
 
     # This is the mumma function which will handle each turn
-    # Draw card -> first player guess -> ... -> until correct guess or back to first player again
+    # Draw card -> first player guess -> ... -> until correct guess or everyone incorrectly guesses
     def game_turns(self):
         
+        # Sanity check to see if we have enough cards in the deck before starting first draw
         try:
             new_card = self.draw_card()
+
         except NoCardError:
             print("Game over - no one wins because there's not enough cards to start the game")
             self.end_game()
 
         self.print_next_turn_text()
 
+        # While there's still cards in the deck and victory condition hasn't been reached
         while new_card:
-            guess_player = self.__players[self.__current_guesser]
+            guess_player = self.players[self.current_guesser]
             print(f"{guess_player.name}'s turn to guess")
             print(''.rjust(20, '>'))
             print()
 
+            # If guess is correct, update new leader if necessary and check victory conditions before drawing card
             if self.handle_guess(new_card):
-                if self.__current_leader is None or \
-                    guess_player.hand.num_cards > self.__current_leader.hand.num_cards:
-                        self.__current_leader = self.__players[self.__current_guesser]
+                if self.current_leader is None or \
+                    guess_player.hand.num_cards > self.current_leader.hand.num_cards:
+                        self.current_leader = self.players[self.current_guesser]
 
                 # Check victory conditions
                 new_card = self.game_over_check(guess_player)
 
+            # next_guesser returns None if everyone already attempted a guess for this round 
             elif not self.next_guesser():
                 print(f"Everyone failed the guess. The correct value was {new_card.value}") 
-                self.__discard_pile.append(new_card)
+                self.discard_pile.append(new_card)
 
                 # Check victory conditions
                 new_card = self.game_over_check(guess_player)
        
         print("Game over!")
         
-        if self.__current_leader is None:
+        if self.current_leader is None:
             print("No one wins!")
 
         else:
-            print(f"{self.__current_leader.name} wins!")
+            print(f"{self.current_leader.name} wins!")
 
         print("See ya later!")
         self.end_game()
 
-
+    # Handle's a given player's guess. Returns True if correct, False if not
     def handle_guess(self, new_card):
-        player = self.__players[self.__current_guesser]
+        player = self.players[self.current_guesser]
 
         print(f"Card description: {new_card.desc}")
 
-        if self.__previous_guesses:
+        if self.previous_guesses:
             print("Ranges guessed incorrectly by previous players:")
-            for g in self.__previous_guesses:
+            for g in self.previous_guesses:
                 print(g, end=' ')
 
             print()
@@ -159,17 +170,23 @@ class Board:
         #      Have to do it this way for now since input blocks everything else
         try:
             guessIndex = int(player.guess_range()) - 1
+
+        # Check if Integer was given
         except ValueError:
             print("Error - Invalid input, counts as wrong guess")
             return False 
+
+        # Check if the guess timer expired
         except TimeoutExpiredError:
             print("Error - input timed out, counts as wrong guess")
             return False
 
+        # Make sure given option is valid 
         if guessIndex < 0 or guessIndex > player.hand.num_cards: 
             print("Invalid option given, counts as wrong guess")
             return False
 
+        # Check guessed range, return True if card misery index lies in that range
         guessedRange = player.hand.ranges[guessIndex]
         if guessedRange[0] <= new_card.value <= guessedRange[1]: 
             print("Your guess was correct! You gained a new card =D")
@@ -179,41 +196,34 @@ class Board:
         # Add guessed range to previous guesses if wrong
         else:
             print("Unfortunately your guess was incorrect =(")
-            self.__previous_guesses.append(guessedRange)
+            self.previous_guesses.append(guessedRange)
 
         return False
 
-    def draw_card(self):
-        try:
-            nextCard = self.__deck.pop()
-            self.__num_cards -= 1
-        except IndexError:
-            raise NoCardError("No more cards left in deck!")
+    # Returns None when everyone has had a turn guessing
+    def next_guesser(self):
+        self.current_guesser += 1
+        self.current_guesser = self.current_guesser % self.num_players
 
-        return nextCard
+        if self.current_guesser == self.current_starter:
+            return
+        
+        return self.players[self.current_guesser]
+    
+    def next_turn(self):
+        self.current_starter += 1
+        self.current_starter = self.current_starter % self.num_players
+        self.current_guesser = self.current_starter
+        self.previous_guesses = []
 
-    # For debugging purposes - will remove later
-    ###################################################
-
-    @property
-    def deck(self):
-        return self.__deck
-
-    @property
-    def current_guesser(self):
-        return self.__current_guesser
-
-    @property
-    def current_starter(self):
-        return self.__current_starter
-
-    ###################################################
-
+        self.print_next_turn_text()
 
     # Initialisation Functions
     ###################################################
 
-    def __initialise_deck(self):
+    # Creates list of cards
+    # Current implementation: Read desc/values from text file and create cards based on that
+    def initialise_deck(self):
         cardRegex = re.compile(r"^(.*) (.*\d)$")
         deck = list()
 
@@ -227,7 +237,7 @@ class Board:
        
         return deck
 
-    def __initialise_players(self, players):
+    def initialise_players(self, players):
         names = dict()
         length = len(players)
         i = 0
@@ -246,63 +256,41 @@ class Board:
                    a += 1
                 nextName += str(a)
 
+            # Once name is valid, put player in player list
             players[i].name = nextName
-            self.__players.append(players[i])
-            
+            self.players.append(players[i])
+           
+            # Increment index, mark name as taken so another player can't have it
             i += 1
             names[nextName] = True
 
-        self.__num_players = len(self.__players)
+        self.num_players = len(self.players)
 
-        if self.__num_players < 2:
+        # Cases for NumPlayerError - Either having less than 2 players or more than max players
+        if self.num_players < 2:
             raise NumPlayerError("Error - Must have at least two players")
 
-        if self.__num_players > self.MAX_PLAYERS:
+        if self.num_players > self.MAX_PLAYERS:
             raise NumPlayerError(f"Error - Can't have more than {self.MAX_PLAYERS} players.")
 
         # Give players their starting cards
-        self.__initialise_player_cards()    
+        self.initialise_player_cards()    
 
         # Shuffle players to have a random starter
-        random.shuffle(self.__players)
-        self.__current_starter = 0
+        random.shuffle(self.players)
+        self.current_starter = 0
 
         # First guesser is the first starter
-        self.__current_guesser = 0
+        self.current_guesser = 0
 
-    def __initialise_player_cards(self):
-        # Each player draws 3 cards
-        for player in self.__players:
+    # Initialises player hands - each player starts with 3 cards
+    def initialise_player_cards(self):
+        for player in self.players:
             for _ in range(self.STARTING_CARDS):
                 player.hand.gain_card(self.draw_card())
     
     ###################################################
 
-
-   
-    # Returns None when everyone has had a turn guessing
-    def next_guesser(self):
-        self.__current_guesser += 1
-        self.__current_guesser = self.__current_guesser % self.__num_players
-
-        if self.__current_guesser == self.current_starter:
-            return
-        
-        return self.__players[self.__current_guesser]
-
-    def next_turn(self):
-        self.__current_starter += 1
-        self.__current_starter = self.__current_starter % self.__num_players
-        self.__current_guesser = self.__current_starter
-        self.__previous_guesses = []
-
-        self.print_next_turn_text()
-
-    def print_next_turn_text(self):
-        print(''.rjust(30,'-'))
-        print(f"{self.__players[self.__current_starter].name} will start the round...")
-        print(''.rjust(30,'-'))
-        print()
 
     # Returns None if game over, otherwise returns the next card for the game
     def game_over_check(self, guess_player=None):
@@ -313,7 +301,7 @@ class Board:
                 return None
 
         # Game Over Condition 2: If deck runs out of cards 
-        if self.__num_cards == 0:
+        if self.num_cards == 0:
             print("There are no more cards left in the deck...")
             return None
         
@@ -325,10 +313,36 @@ class Board:
         # Not sure how this will work later, functionalised it to make it easier
         sys.exit()
 
-    ##### DEBUG METHODS ######
+
+    # Printing functions 
+    ###################################################
+
+    # prints info for next turn
+    def print_next_turn_text(self):
+        print(''.rjust(30,'-'))
+        print(f"{self.players[self.current_starter].name} will start the round...")
+        print(''.rjust(30,'-'))
+        print()
+
+    # Currently used for showing player hands during each round/guess
+    # Will be changed in future versions no doubt
     def print_player_cards(self):
-        for player in self.__players:
+        for player in self.players:
             print(f"Player {player.name}'s cards: ({player.hand.num_cards} total)")
             player.hand.print_hand() 
 
+    # Property decorators - i.e. for testing/playing around with how they work
+    ###################################################
+
+    # @property
+    # def deck(self):
+        # return self.__deck
+
+    # @property
+    # def current_guesser(self):
+        # return self.__current_guesser
+
+    # @property
+    # def current_starter(self):
+        # return self.__current_starter
 
