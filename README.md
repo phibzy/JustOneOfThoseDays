@@ -8,7 +8,7 @@ Each card has a misery index value on it between 0 and 100.
 Players start with three cards shown face up on "table".
 Players take turns drawing a card. 
 Card's misery index value is hidden, only the unpleasant event on the card is revealed.
-The player to has to guess where in their face-up card ranges this new card lies. (e.g. where does it fit within the values of their own cards)
+The player has to guess where in their face-up card ranges this new card lies. (e.g. where does it fit within the values of their own cards).
 If they correctly guess where it lies, they place it on the table face up in front of them. 
 If they don't, the next player on their right has a turn at guessing. 
 This repeats until every player has had a guess or until someone guesses it correctly. 
