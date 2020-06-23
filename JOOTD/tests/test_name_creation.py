@@ -17,21 +17,16 @@
 """
 
 import unittest
-import io
 from JOOTD.board import Board
 from JOOTD.player import Player
-import sys
-
-class NullIO(io.StringIO):
-    """ Used to stop output to stdout for tests """
-    def write(self, txt):
-        pass
 
 class TestNameCreation(unittest.TestCase):
-    """ Tests name creation module """
+    """ 
 
-    # Turn off NumPlayer error to get this to work
-    # a = Board([])
+    Tests name creation module 
+    Turn off player list shuffling to make sure this works
+
+    """
 
     def test_same_name1(self):
         """ Single duplicate name case """

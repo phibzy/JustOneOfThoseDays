@@ -12,18 +12,18 @@ class testRangeInsert(unittest.TestCase):
 
     def testFrontInsert(self):
         b = Board([Player("Akerstache"), Player("Steven Wilton")])
-        testPlayer = b.current_starter
+        testPlayer = b.players[b.current_starter]
         
-        self.assertEqual(len(testPlayer.ranges), testPlayer.num_cards + 1, "Error - Number of ranges invalid")
+        self.assertEqual(len(testPlayer.hand.ranges), testPlayer.hand.num_cards + 1, "Error - Number of ranges invalid")
 
         newCard = Card("Nothing happens", 0)
 
-        testPlayer.gain_card(newCard)
+        testPlayer.hand.gain_card(newCard)
 
-        self.assertEqual(len(testPlayer.ranges), testPlayer.num_cards + 1, "Error - Number of ranges invalid")
-        self.assertEqual(testPlayer.cards[0], newCard, "Error - Card not inserted in front")
-        self.assertEqual(testPlayer.ranges[0], (0,0), "Error - Range not 0,0")
-        self.assertEqual(testPlayer.ranges[1][0], 0, "Error - First element of next tuple not changed")
+        self.assertEqual(len(testPlayer.hand.ranges), testPlayer.hand.num_cards + 1, "Error - Number of ranges invalid")
+        self.assertEqual(testPlayer.hand.cards[0], newCard, "Error - Card not inserted in front")
+        self.assertEqual(testPlayer.hand.ranges[0], (0,0), "Error - Range not 0,0")
+        self.assertEqual(testPlayer.hand.ranges[1][0], 0, "Error - First element of next tuple not changed")
 
 
 

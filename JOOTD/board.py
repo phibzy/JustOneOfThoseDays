@@ -84,9 +84,6 @@ class Board:
 
         self.previous_guesses = list()
 
-        # Run the actual game
-        self.game_turns()
-
     # Draws a card from the deck
     def draw_card(self):
         try:
@@ -218,6 +215,9 @@ class Board:
         self.previous_guesses = []
 
         self.print_next_turn_text()
+
+    def start_game(self):
+        self.game_turns()
 
     # Initialisation Functions
     ###################################################
