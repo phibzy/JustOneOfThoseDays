@@ -15,3 +15,4 @@ players = [
           ]
 
 board = Board(players)
+board.start_game()
