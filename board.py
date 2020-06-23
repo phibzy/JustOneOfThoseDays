@@ -243,26 +243,29 @@ class Board:
         i = 0
 
         while i < length:
-            nextName = players[i].name
+            next_name = players[i].name
 
             # If player doesn't have name, call them Gary
-            if not nextName:
-                nextName = "Gary"
+            if not next_name:
+                next_name = "Gary"
 
-            # If player has same name, put a number on the end of their name
-            if nextName in names:
-                a = 2
-                while (nextName + str(a)) in names:
+            # If player has same name, put a number on the end of their name in brackets
+            # Basically the same way XBL handles duplicate names
+            if next_name in names:
+                a = names[next_name]
+                while (next_name + f"({a})") in names:
                    a += 1
-                nextName += str(a)
+                next_name += f"({a})"
+
+                names[players[i].name] = a
 
             # Once name is valid, put player in player list
-            players[i].name = nextName
+            players[i].name = next_name
             self.players.append(players[i])
            
             # Increment index, mark name as taken so another player can't have it
             i += 1
-            names[nextName] = True
+            names[next_name] = 1
 
         self.num_players = len(self.players)
 
@@ -277,7 +280,7 @@ class Board:
         self.initialise_player_cards()    
 
         # Shuffle players to have a random starter
-        random.shuffle(self.players)
+        #random.shuffle(self.players) #TODO: turn on again after testing
         self.current_starter = 0
 
         # First guesser is the first starter
