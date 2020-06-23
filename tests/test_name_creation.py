@@ -17,8 +17,8 @@
 """
 
 import unittest
-from JOOTD.board import Board
-from JOOTD.player import Player
+from JustOneOfThoseDays.board import Board
+from JustOneOfThoseDays.player import Player
 
 class TestNameCreation(unittest.TestCase):
     """ 

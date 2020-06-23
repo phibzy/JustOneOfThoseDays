@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import unittest
-from JOOTD.board import Board
-from JOOTD.player import Player
-from JOOTD.card import Card
+from JustOneOfThoseDays.board import Board
+from JustOneOfThoseDays.player import Player
+from JustOneOfThoseDays.card import Card
 
 class testRangeInsert(unittest.TestCase):
     
