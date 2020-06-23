@@ -8,6 +8,7 @@ Keeps track of the current game state
 # Project file imports
 from player import Player
 from card import Card
+from card_list import card_list
 from exceptions import NoCardError, NumPlayerError, TimeoutExpiredError
 
 # Library imports
@@ -222,19 +223,14 @@ class Board:
     ###################################################
 
     # Creates list of cards
-    # Current implementation: Read desc/values from text file and create cards based on that
+    # Current implementation: Import card list and make card objects for each 
     def initialise_deck(self):
-        cardRegex = re.compile(r"^(.*) (.*\d)$")
         deck = list()
 
-        f1 = open("card_list.txt")
-        for line in f1.readlines():
-            mo = cardRegex.search(line)
-            new_card = Card(mo.group(1), float(mo.group(2))) 
+        for desc, index in card_list:
+            new_card = Card(desc, index)
             deck.append(new_card)
 
-        f1.close()
-       
         return deck
 
     def initialise_players(self, players):
@@ -334,8 +330,17 @@ class Board:
             print(f"Player {player.name}'s cards: ({player.hand.num_cards} total)")
             player.hand.print_hand() 
 
-    # Property decorators - i.e. for testing/playing around with how they work
+    # Property decorators/misc debug funcs - i.e. for testing/playing around with how they work
     ###################################################
+
+    # def print_deck(self):
+        # out = ''
+        # out += "["
+        # for card in self.deck:
+            # out += f"""("{card.desc}", {card.value}),\n"""
+
+        # out += "]"
+        # print(out, file=open("card_list.py", "w"))
 
     # @property
     # def deck(self):

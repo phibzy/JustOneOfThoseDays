@@ -26,6 +26,10 @@ class Player:
         self.__hand = Hand()
         self.__name = name
 
+    def __eq__(self, otherPerson):
+        """ For debugging, checks if player names are equal """
+        return self.name == otherPerson.name
+
     # Our getter methods
     @property
     def hand(self):
