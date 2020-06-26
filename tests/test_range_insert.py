@@ -55,6 +55,7 @@ class testRangeInsert(unittest.TestCase):
 
         p.hand.gain_card(Card("Writer's block", 40))
         self.assertEqual(p.hand.ranges, [(0,15), (15,38), (38,40), (40, 42), (42,74), (74, 100)], "Middle insert case 3")
+
         p.hand.gain_card(Card("Tester's block", 39))
         self.assertEqual(p.hand.ranges, [(0,15), (15,38), (38,39), (39,40), (40, 42), (42,74), (74, 100)], "Middle insert case 3")
 
@@ -90,3 +91,122 @@ class testRangeInsert(unittest.TestCase):
         p.hand.gain_card(Card("Devoured by giant spider", 81))
         self.assertEqual(p.hand.num_cards, 9, "num_cards error")
         self.assertEqual(p.hand.ranges, [(0,20), (20,30), (30,81), (81, 100)], "Duplicate insert case 7")
+
+    def test_insert_limited_original_ranges(self):
+        p = Player("Test Dummy2")
+        p.hand.gain_card(Card("Meh", 0))
+        self.assertEqual(p.hand.num_cards, 1, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 100)], "Default range case 1")
+
+        p.hand.gain_card(Card("AAH", 100))
+        self.assertEqual(p.hand.num_cards, 2, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 100)], "Default range case 2")
+
+        p.hand.gain_card(Card("Middle range card", 50))
+        self.assertEqual(p.hand.num_cards, 3, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 50), (50,100)], "Default range case 3")
+
+        p.hand.gain_card(Card("AAH2", 100))
+        self.assertEqual(p.hand.num_cards, 4, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 50), (50,100)], "Default range case 3")
+
+    def test_weird_duplicate_range_front(self):
+        p = Player("Test Dummy3")
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 1, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 1")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 2, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 2")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 3, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 3")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 4, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 4")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 5, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 43))
+        self.assertEqual(p.hand.num_cards, 6, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 62), (62,100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 43))
+        self.assertEqual(p.hand.num_cards, 7, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 62), (62,100)], "Weird duplicate range case 5")
+
+        #### CRITICAL PART OF TEST #####
+        p.hand.gain_card(Card("Break stuff", 50))
+        self.assertEqual(p.hand.num_cards, 8, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 50), (50, 62), (62,100)], "Weird duplicate range case 5")
+
+    def test_weird_duplicate_range_front2(self):
+        p = Player("Test Dummy3")
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 1, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 1")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 2, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 2")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 3, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 3")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 4, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 4")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 5, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 43))
+        self.assertEqual(p.hand.num_cards, 6, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 62), (62,100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 43))
+        self.assertEqual(p.hand.num_cards, 7, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 62), (62,100)], "Weird duplicate range case 5")
+
+        #### CRITICAL PART OF TEST #####
+        p.hand.gain_card(Card("Break stuff", 73))
+        self.assertEqual(p.hand.num_cards, 8, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 43), (43, 62), (62, 73), (73, 100)], "Weird duplicate range case 5")
+
+    def test_weird_duplicate_range_back(self):
+        p = Player("Test Dummy3")
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 1, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 1")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 2, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 2")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 3, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 3")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 4, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 4")
+
+        p.hand.gain_card(Card("Unwilling subject of love song", 62))
+        self.assertEqual(p.hand.num_cards, 5, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62,100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 75))
+        self.assertEqual(p.hand.num_cards, 6, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62, 75), (75, 100)], "Weird duplicate range case 5")
+
+        p.hand.gain_card(Card("Super sleepiness", 75))
+        self.assertEqual(p.hand.num_cards, 7, "num_cards error")
+        self.assertEqual(p.hand.ranges, [(0, 62), (62, 75), (75, 100)], "Weird duplicate range case 5")
+

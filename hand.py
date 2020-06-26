@@ -24,9 +24,13 @@ class Hand:
     """
 
     def __init__(self):
+        # Initialise boundaries/default ranges
         self.__boundaries = dict()
+        self.__boundaries[0] = 1
+        self.__boundaries[100] = 1
+       
         self.__cards      = []
-        self.__ranges     = []
+        self.__ranges     = [(0,100)]
         self.__num_cards  = 0
 
     @property
@@ -49,20 +53,17 @@ class Hand:
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, new_card):
 
-        if self.__cards == []:
-            self.__cards.append(new_card)
-            self.__ranges.append((0, new_card.value))
-            self.__ranges.append((new_card.value, 100.0))
-            self.__boundaries[new_card.value] = 1
-            self.__boundaries[0] = 1
-            self.__boundaries[100] = 1
+        insert_index = bisect.bisect(self.__cards, new_card)
+        bisect.insort(self.__cards, new_card)
 
-        else:
-            insert_index = bisect.bisect(self.__cards, new_card)
+        if new_card.value not in self.__boundaries:
             
-            bisect.insort(self.__cards, new_card)
+            self.__boundaries[new_card.value] = 1
+            # Modify existing ranges
+            # Need to change endpoint of behind range and startpoint of range in front
+            if len(self.__ranges) > 1:
 
-            if new_card.value not in self.__boundaries:
+                ###TODO: Lots of bugs here
 
                 self.__ranges[insert_index] = (new_card.value, self.__ranges[insert_index][1])
 
@@ -71,8 +72,11 @@ class Hand:
                 else:
                     self.__ranges.insert(0, (0, new_card.value)) 
 
-                self.__boundaries[new_card.value] = 1
-
+                #########################
+            else:
+                # If the only range is (0,100) then it's much simpler
+                self.__ranges.append((new_card.value, self.__ranges[0][1]))
+                self.__ranges[0] = (self.__ranges[0][0], new_card.value)
 
         self.__num_cards += 1
 

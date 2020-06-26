@@ -46,8 +46,10 @@ class Player:
     # For human players, takes input from stdin
     def guess_range(self):
 
-        # Stdin with timeout of 10 seconds
-        guess = input_with_timeout('', 10)
+        # Stdin with timeout of 30 seconds
+        TIMEOUT_LENGTH = 30
+
+        guess = input_with_timeout('', TIMEOUT_LENGTH)
 
         return guess
 

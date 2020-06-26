@@ -126,7 +126,7 @@ class Board:
 
             # next_guesser returns None if everyone already attempted a guess for this round 
             elif not self.next_guesser():
-                print(f"Everyone failed the guess. The correct value was {new_card.value}") 
+                print(f"Everyone failed the guess. The correct value was {new_card.value}\n") 
                 self.discard_pile.append(new_card)
 
                 # Check victory conditions
@@ -157,7 +157,7 @@ class Board:
             print()
 
         print()
-        print("Where in the range of your card's values do you think this card lies?")
+        print("Where in the range of your card's values do you think this card lies?\n")
         print("Choose a number from the following:")
 
 
@@ -171,17 +171,17 @@ class Board:
 
         # Check if Integer was given
         except ValueError:
-            print("Error - Invalid input, counts as wrong guess")
+            print("Error - Invalid input, counts as wrong guess\n")
             return False 
 
         # Check if the guess timer expired
         except TimeoutExpiredError:
-            print("Error - input timed out, counts as wrong guess")
+            print("Error - input timed out, counts as wrong guess\n")
             return False
 
         # Make sure given option is valid 
-        if guessIndex < 0 or guessIndex > player.hand.num_cards: 
-            print("Invalid option given, counts as wrong guess")
+        if guessIndex < 0 or guessIndex >= len(player.hand.ranges): 
+            print("Invalid option given, counts as wrong guess\n")
             return False
 
         # Check guessed range, return True if card misery index lies in that range
