@@ -24,9 +24,14 @@ class Hand:
     """
 
     def __init__(self):
-        self.__cards     = []
-        self.__ranges    = []
-        self.__num_cards = 0
+        self.__boundaries = dict()
+        self.__cards      = []
+        self.__ranges     = []
+        self.__num_cards  = 0
+
+    @property
+    def boundaries(self):
+        return self.__boundaries
 
     @property
     def cards(self):
@@ -42,23 +47,31 @@ class Hand:
 
 
     # Adds card to Player's faceup cards if they guess correctly
-    def gain_card(self, newCard):
+    def gain_card(self, new_card):
 
         if self.__cards == []:
-            self.__cards.append(newCard)
-            self.__ranges.append((0, newCard.value))
-            self.__ranges.append((newCard.value, 100.0))
+            self.__cards.append(new_card)
+            self.__ranges.append((0, new_card.value))
+            self.__ranges.append((new_card.value, 100.0))
+            self.__boundaries[new_card.value] = 1
+            self.__boundaries[0] = 1
+            self.__boundaries[100] = 1
 
         else:
-            insertIndex = bisect.bisect(self.__cards, newCard)
+            insert_index = bisect.bisect(self.__cards, new_card)
             
-            bisect.insort(self.__cards, newCard)
-            self.__ranges[insertIndex] = (newCard.value, self.__ranges[insertIndex][1])
+            bisect.insort(self.__cards, new_card)
 
-            if insertIndex != 0:
-                self.__ranges.insert(insertIndex, (self.__ranges[insertIndex - 1][1] ,newCard.value))
-            else:
-                self.__ranges.insert(0, (0, newCard.value)) 
+            if new_card.value not in self.__boundaries:
+
+                self.__ranges[insert_index] = (new_card.value, self.__ranges[insert_index][1])
+
+                if insert_index != 0:
+                    self.__ranges.insert(insert_index, (self.__ranges[insert_index - 1][1] ,new_card.value))
+                else:
+                    self.__ranges.insert(0, (0, new_card.value)) 
+
+                self.__boundaries[new_card.value] = 1
 
 
         self.__num_cards += 1
