@@ -8,11 +8,7 @@
 
   Tests for duplicate name handling
 
-  Cases:
-
-  - 1 same name
-
-
+  IMPORTANT: TURN OFF PLAYER ORDER SHUFFLING BEFORE TESTING THIS
 
 """
 

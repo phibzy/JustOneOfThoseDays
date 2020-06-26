@@ -276,7 +276,7 @@ class Board:
         self.initialise_player_cards()    
 
         # Shuffle players to have a random starter
-        #random.shuffle(self.players) #TODO: turn on again after testing
+        random.shuffle(self.players) #TODO: turn on again after testing
         self.current_starter = 0
 
         # First guesser is the first starter
