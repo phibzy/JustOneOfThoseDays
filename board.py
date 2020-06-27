@@ -160,9 +160,7 @@ class Board:
         print("Where in the range of your card's values do you think this card lies?\n")
         print("Choose a number from the following:")
 
-
-        for i, val in enumerate(player.hand.ranges):
-            print(f"{i + 1}.) Between {val[0]} and {val[1]}")
+        player.hand.print_ranges()
 
         #TODO: In future version, implement timeout via multithreading when not reading stdin
         #      Have to do it this way for now since input blocks everything else

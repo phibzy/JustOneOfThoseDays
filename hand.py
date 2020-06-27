@@ -84,5 +84,9 @@ class Hand:
         for c in self.__cards:
             print(f"{c.desc} - {c.value}")
 
+    def print_ranges(self):
+        for i, val in enumerate(self.ranges):
+            print(f"{i + 1}.) Between {val[0]} and {val[1]}")
+
 
 
