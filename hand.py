@@ -58,6 +58,8 @@ class Hand:
 
     ##############################
 
+    def card_index(self, index):
+        return self.__cards[index]
 
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, new_card):

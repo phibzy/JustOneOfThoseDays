@@ -57,6 +57,9 @@ class Player:
 
     ########################################
 
+    def card_index(self, index):
+        return self.__hand.card_index(index)
+
     def gain_card(self, new_card):
         self.__hand.gain_card(new_card)
 
