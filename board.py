@@ -118,7 +118,7 @@ class Board:
             # If guess is correct, update new leader if necessary and check victory conditions before drawing card
             if self.handle_guess(new_card):
                 if self.current_leader is None or \
-                    guess_player.hand.num_cards > self.current_leader.hand.num_cards:
+                    guess_player.num_cards > self.current_leader.num_cards:
                         self.current_leader = self.players[self.current_guesser]
 
                 # Check victory conditions
@@ -160,7 +160,7 @@ class Board:
         print("Where in the range of your card's values do you think this card lies?\n")
         print("Choose a number from the following:")
 
-        player.hand.print_ranges()
+        player.print_ranges()
 
         #TODO: In future version, implement timeout via multithreading when not reading stdin
         #      Have to do it this way for now since input blocks everything else
@@ -178,15 +178,16 @@ class Board:
             return False
 
         # Make sure given option is valid 
-        if guessIndex < 0 or guessIndex >= len(player.hand.ranges): 
+        #TODO: abstract checking range length
+        if guessIndex < 0 or guessIndex >= player.num_ranges: 
             print("Invalid option given, counts as wrong guess\n")
             return False
 
         # Check guessed range, return True if card misery index lies in that range
-        guessedRange = player.hand.ranges[guessIndex]
+        guessedRange = player.guessed_range(guessIndex)
         if guessedRange[0] <= new_card.value <= guessedRange[1]: 
             print("Your guess was correct! You gained a new card =D")
-            player.hand.gain_card(new_card)
+            player.gain_card(new_card)
             return True
         
         # Add guessed range to previous guesses if wrong
@@ -284,7 +285,7 @@ class Board:
     def initialise_player_cards(self):
         for player in self.players:
             for _ in range(self.STARTING_CARDS):
-                player.hand.gain_card(self.draw_card())
+                player.gain_card(self.draw_card())
     
     ###################################################
 
@@ -293,7 +294,7 @@ class Board:
     def game_over_check(self, guess_player=None):
         # Game Over Condition 1: If player reaches 10 cards
         if guess_player is not None and \
-            guess_player.hand.num_cards == 10:
+            guess_player.num_cards == 10:
                 print(f"{guess_player.name} has 10 cards...")
                 return None
 
@@ -325,8 +326,8 @@ class Board:
     # Will be changed in future versions no doubt
     def print_player_cards(self):
         for player in self.players:
-            print(f"Player {player.name}'s cards: ({player.hand.num_cards} total)")
-            player.hand.print_hand() 
+            print(f"Player {player.name}'s cards: ({player.num_cards} total)")
+            player.print_hand() 
 
     # Property decorators/misc debug funcs - i.e. for testing/playing around with how they work
     ###################################################

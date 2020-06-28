@@ -32,6 +32,9 @@ class Hand:
         self.__cards      = []
         self.__ranges     = [(0,100)]
         self.__num_cards  = 0
+        self.__num_ranges = 1 
+
+    #### Property functions ######
 
     @property
     def boundaries(self):
@@ -48,6 +51,12 @@ class Hand:
     @property
     def num_cards(self):
         return self.__num_cards
+
+    @property
+    def num_ranges(self):
+        return self.__num_ranges
+
+    ##############################
 
 
     # Adds card to Player's faceup cards if they guess correctly
@@ -78,7 +87,12 @@ class Hand:
                 self.__ranges.append((new_card.value, self.__ranges[0][1]))
                 self.__ranges[0] = (self.__ranges[0][0], new_card.value)
 
+            self.__num_ranges += 1
+
         self.__num_cards += 1
+
+    def guessed_range(self, index):
+        return self.__ranges[index]
 
     def print_hand(self):
         for c in self.__cards:

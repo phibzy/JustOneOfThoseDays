@@ -27,10 +27,10 @@ class Player:
         self.__name = name
 
     def __eq__(self, otherPerson):
-        """ For debugging, checks if player names are equal """
         return self.name == otherPerson.name
 
-    # Our getter methods
+    # Our getter methods/properties
+    #######################################
     @property
     def hand(self):
         return self.__hand
@@ -43,6 +43,23 @@ class Player:
     def name(self, new_name):
         self.__name = new_name
 
+    @property
+    def num_cards(self):
+        return self.__hand.num_cards
+
+    @property
+    def num_ranges(self):
+        return self.__hand.num_ranges
+
+    @property
+    def ranges(self):
+        return self.__hand.ranges
+
+    ########################################
+
+    def gain_card(self, new_card):
+        self.__hand.gain_card(new_card)
+
     # For human players, takes input from stdin
     def guess_range(self):
 
@@ -52,6 +69,15 @@ class Player:
         guess = input_with_timeout('', TIMEOUT_LENGTH)
 
         return guess
+
+    def guessed_range(self, index):
+        return self.__hand.guessed_range(index)
+
+    def print_hand(self):
+        self.__hand.print_hand()
+
+    def print_ranges(self):
+        self.__hand.print_ranges()
 
 # Courtesy of Stack Overflow user jfs
 # Handles timed input of stdin, raising exception when time expires
