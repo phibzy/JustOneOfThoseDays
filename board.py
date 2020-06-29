@@ -178,7 +178,6 @@ class Board:
             return False
 
         # Make sure given option is valid 
-        #TODO: abstract checking range length
         if guessIndex < 0 or guessIndex >= player.num_ranges: 
             print("Invalid option given, counts as wrong guess\n")
             return False
@@ -275,7 +274,7 @@ class Board:
         self.initialise_player_cards()    
 
         # Shuffle players to have a random starter
-        random.shuffle(self.players) #TODO: turn on again after testing
+        random.shuffle(self.players) 
         self.current_starter = 0
 
         # First guesser is the first starter
