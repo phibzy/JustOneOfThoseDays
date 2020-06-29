@@ -64,17 +64,17 @@ class Hand:
     # Adds card to Player's faceup cards if they guess correctly
     def gain_card(self, new_card):
 
-        insert_index = bisect.bisect(self.__cards, new_card)
         bisect.insort(self.__cards, new_card)
 
         if new_card.value not in self.__boundaries:
             
-            self.__boundaries[new_card.value] = 1
             # Modify existing ranges
             # Need to change endpoint of behind range and startpoint of range in front
-            if len(self.__ranges) > 1:
+            if self.__num_ranges > 1:
 
-                ###TODO: Lots of bugs here
+                #TODO: Change this to something better later lol
+
+                insert_index = bisect.bisect(sorted(list(self.__boundaries.keys())), new_card.value) - 1
 
                 self.__ranges[insert_index] = (new_card.value, self.__ranges[insert_index][1])
 
@@ -88,7 +88,8 @@ class Hand:
                 # If the only range is (0,100) then it's much simpler
                 self.__ranges.append((new_card.value, self.__ranges[0][1]))
                 self.__ranges[0] = (self.__ranges[0][0], new_card.value)
-
+            
+            self.__boundaries[new_card.value] = 1
             self.__num_ranges += 1
 
         self.__num_cards += 1

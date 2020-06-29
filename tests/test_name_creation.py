@@ -30,7 +30,7 @@ class TestNameCreation(unittest.TestCase):
         self.assertEqual(sorted(a.players), [Player('Bob'), Player('Bob(1)')], "Fails basic case")
 
     
-    def test_ranom_order_same_name(self):
+    def test_random_order_same_name(self):
         """ Random order duplicate name case """
         names =   [ Player('Bob'),
                     Player('Mike'),
