@@ -27,28 +27,29 @@ class TestNameCreation(unittest.TestCase):
     def test_same_name1(self):
         """ Single duplicate name case """
         a = Board([Player('Bob'), Player('Bob')])
-        self.assertEqual(a.players, [Player('Bob'), Player('Bob(1)')], "Fails basic case")
+        self.assertEqual(sorted(a.players), [Player('Bob'), Player('Bob(1)')], "Fails basic case")
 
     
     def test_ranom_order_same_name(self):
         """ Random order duplicate name case """
-        a = Board([
-                    Player('Bob'),
+        names =   [ Player('Bob'),
                     Player('Mike'),
                     Player('Tree'),
                     Player('Mike'),
                     Player('Willis'),
                     Player('Bob')
-                  ])
+                  ]
 
-        self.assertEqual(a.players, [ 
+        a = Board(names)
+
+        self.assertEqual(sorted(a.players), sorted([ 
                     Player('Bob'),
                     Player('Mike'),
                     Player('Tree'),
                     Player('Mike(1)'),
                     Player('Willis'),
                     Player('Bob(1)')
-                  ]
+                  ])
         , "Fails random case")
 
 
@@ -65,7 +66,7 @@ class TestNameCreation(unittest.TestCase):
                     Player('Bob'),
                   ])
 
-        self.assertEqual(a.players, [ 
+        self.assertEqual(sorted(a.players), sorted([ 
                     Player('Bob'),
                     Player('Bob(1)'),
                     Player('Bob(2)'),
@@ -73,7 +74,7 @@ class TestNameCreation(unittest.TestCase):
                     Player('Bob(3)'),
                     Player('Bob(3)(1)'),
                     Player('Bob(4)'),
-                  ]
+                  ])
         , "Fails random case")
 
     def test_default_duplicate(self):
@@ -86,11 +87,11 @@ class TestNameCreation(unittest.TestCase):
                     Player(''),
                   ])
 
-        self.assertEqual(a.players, [ 
+        self.assertEqual(sorted(a.players), sorted([ 
                     Player('Gary'),
                     Player('Gary(1)'),
                     Player('Gary(2)'),
                     Player('Gary(2)(1)'),
                     Player('Gary(3)'),
-                  ]
+                  ])
         , "Fails random case")

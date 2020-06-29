@@ -29,6 +29,9 @@ class Player:
     def __eq__(self, otherPerson):
         return self.name == otherPerson.name
 
+    def __lt__(self, otherPerson):
+        return self.name < otherPerson.name
+
     # Our getter methods/properties
     #######################################
     @property
