@@ -1,5 +1,5 @@
 # Just One Of Those Days
-A Python implementation of Stuff/S*** Happens by Goliath Games. I am in no way affiliated with them, this is purely a hobby project.
+A Python implementation of Stuff/S*** Happens by Goliath Games. I am in no way affiliated with them, this is purely a hobby project. Written for Python 3.6.9+
 
 # Basic Spec
 100 cards with unpleasant experiences on them. 
