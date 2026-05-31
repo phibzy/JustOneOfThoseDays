@@ -49,16 +49,21 @@ npm run test
 ## How to Play
 
 1. Open the app in your browser
-2. Enter 2–8 player names in the lobby and click **Start Game**
-3. Share the generated links with each player (each player opens their link in their own browser)
-4. Each round, a card is drawn and its description is shown (but not its Misery Index value)
-5. The current guesser chooses which range in their hand the card's value falls into
-6. Correct guess → gain the card! Wrong guess → next player tries
-7. First to 10 cards wins, or highest card count when the deck runs out
+2. In the lobby, add 2–8 slots and choose for each whether it is a **Human** or a **CPU** (use **+ Add Player** / **+ Add CPU**). At least one human is required.
+3. Click **Start Game**
+4. Share the generated links with each human player (each player opens their link in their own browser). CPU players take their turns automatically.
+5. Each round, a card is drawn and its description is shown (but not its Misery Index value)
+6. The current guesser chooses which range in their hand the card's value falls into
+7. Correct guess → gain the card! Wrong guess → next player tries
+8. First to 10 cards wins, or highest card count when the deck runs out
+
+> **Note:** In-progress games are persisted to disk, so they survive a server
+> restart. The state file location can be configured with the
+> `JUSTONE_STATE_FILE` environment variable (defaults to `game_state.json`).
 
 ## Game Rules
 
-- 2–8 Players
+- 2–8 Players (any slot may be filled by a human or a CPU; at least one human is required)
 - Each player starts with 3 cards drawn from the deck
 - Each card describes an unpleasant experience followed by its Misery Index: a number measuring how bad it is (100 being the most horrible experience possible)
 - Each player's cards are ordered according to their Misery Index

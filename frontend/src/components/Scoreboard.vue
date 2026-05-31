@@ -26,6 +26,7 @@ defineProps<{
         <div class="player-name">
           {{ player.name }}
           <span v-if="player.name === myName" class="badge badge-info">You</span>
+          <span v-else-if="player.is_cpu" class="badge badge-info">CPU</span>
         </div>
         <div class="player-cards">{{ player.num_cards }}</div>
         <div class="player-label">cards</div>

@@ -2,7 +2,7 @@
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { GameState, GameCreatedResponse } from '../types/game'
+import type { GameState, GameCreatedResponse, PlayerSlot } from '../types/game'
 
 export const useGameStore = defineStore('game', () => {
   // State
@@ -61,14 +61,14 @@ export const useGameStore = defineStore('game', () => {
   })
 
   // Actions
-  async function createGame(playerNames: string[]): Promise<GameCreatedResponse> {
+  async function createGame(players: PlayerSlot[]): Promise<GameCreatedResponse> {
     loading.value = true
     error.value = null
     try {
       const resp = await fetch('/api/game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ player_names: playerNames }),
+        body: JSON.stringify({ players }),
       })
       if (!resp.ok) {
         const errData = await resp.json()

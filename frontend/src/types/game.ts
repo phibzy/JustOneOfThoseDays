@@ -26,7 +26,13 @@ export interface HandInfo {
 export interface PlayerInfo {
   name: string
   num_cards: number
+  is_cpu?: boolean
   hand?: HandInfo
+}
+
+export interface PlayerSlot {
+  name: string
+  is_cpu: boolean
 }
 
 export interface GameState {
