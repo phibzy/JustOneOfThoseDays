@@ -75,12 +75,18 @@ ws_manager = ConnectionManager()
 
 @app.post("/api/game", response_model=GameCreatedResponse)
 async def create_game(request: CreateGameRequest) -> GameCreatedResponse:
-    """Create a new game with the given player names."""
-    game_id = str(uuid.uuid4())[:8]
-    session = game_manager.create_game(game_id, request.player_names)
+    """Create a new game with the given player slots (humans and/or CPUs)."""
+    specs = request.resolved_players()
+    player_names = [spec.name for spec in specs]
+    cpu_flags = [spec.is_cpu for spec in specs]
 
-    # Start the game immediately
+    game_id = str(uuid.uuid4())[:8]
+    session = game_manager.create_game(game_id, player_names, cpu_flags)
+
+    # Start the game immediately, then auto-play any leading CPU turns.
     session.start()
+    session.advance_cpu_turns()
+    game_manager.save()
 
     return GameCreatedResponse(
         game_id=game_id,
@@ -124,6 +130,10 @@ async def submit_guess(
         raise HTTPException(status_code=400, detail="Not your turn")
 
     state = session.submit_guess(request.guess_index)
+    # Auto-play any CPU turns that follow this guess.
+    session.advance_cpu_turns()
+    game_manager.save()
+    state = session.get_state(player_name)
     state["game_id"] = game_id
 
     # Broadcast updated state to all connected players
@@ -182,6 +192,9 @@ async def websocket_endpoint(websocket: WebSocket, game_id: str) -> None:
 
                 guess_index = data.get("guess_index", -1)
                 session.submit_guess(guess_index)
+                # Auto-play any CPU turns that follow this guess.
+                session.advance_cpu_turns()
+                game_manager.save()
 
                 # Broadcast to all players
                 await ws_manager.broadcast_game_state(game_id, session)

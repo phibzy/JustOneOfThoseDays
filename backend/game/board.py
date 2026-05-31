@@ -35,7 +35,7 @@ class Board:
     MAX_PLAYERS = 8
     WIN_CARD_COUNT = 10
 
-    def __init__(self, player_names: List[str]) -> None:
+    def __init__(self, player_names: List[str], cpu_flags: Optional[List[bool]] = None) -> None:
         # Create the game deck + discard pile
         self.discard_pile: List[Card] = []
         self.deck: List[Card] = self._initialise_deck()
@@ -57,7 +57,7 @@ class Board:
         self.winner: Optional[Player] = None
 
         # Initialise players (validates count, handles duplicates, deals cards)
-        self._initialise_players(player_names)
+        self._initialise_players(player_names, cpu_flags)
 
     def start_game(self) -> Dict[str, Any]:
         """Start the game by drawing the first card. Returns game state."""
@@ -97,6 +97,99 @@ class Board:
             self._add_message(f"{player.name}'s guess was incorrect!")
             self.previous_guesses.append(guessed_range)
             return self._handle_wrong_guess()
+
+    def advance_cpu_turns(self) -> Dict[str, Any]:
+        """
+        Automatically play any turns belonging to CPU guessers.
+
+        Keeps submitting guesses on behalf of CPU players until it is a human
+        player's turn to guess or the game is over. Messages produced during
+        the CPU turns are accumulated so that human players can follow along.
+        """
+        collected: List[str] = list(self.message_log)
+        # Guard against pathological loops (e.g. all-CPU games never blocking).
+        guard = 0
+        max_iterations = 100000
+        while (
+            self.state == GameState.WAITING_FOR_GUESS
+            and self.players[self.current_guesser].is_cpu
+            and guard < max_iterations
+        ):
+            guess_index = self._cpu_choose_guess(self.players[self.current_guesser])
+            self.submit_guess(guess_index)
+            collected.extend(self.message_log)
+            guard += 1
+        self.message_log = collected
+        return self.get_game_state()
+
+    def _cpu_choose_guess(self, player: Player) -> int:
+        """
+        Pick a range index for a CPU guesser.
+
+        Uses a simple heuristic: weight each range by its width so the CPU is
+        more likely to choose the range most likely to contain the value.
+        """
+        ranges = player.ranges
+        if not ranges:
+            return 0
+        widths = [max(high - low, 0) for low, high in ranges]
+        total = sum(widths)
+        if total <= 0:
+            return random.randrange(len(ranges))
+        return random.choices(range(len(ranges)), weights=widths, k=1)[0]
+
+    def serialize(self) -> Dict[str, Any]:
+        """Return a fully persistable representation of the board."""
+        return {
+            "deck": [c.to_dict() for c in self.deck],
+            "discard_pile": [c.to_dict() for c in self.discard_pile],
+            "num_cards": self.num_cards,
+            "players": [p.serialize() for p in self.players],
+            "current_guesser": self.current_guesser,
+            "current_starter": self.current_starter,
+            "current_leader": (
+                self.players.index(self.current_leader)
+                if self.current_leader is not None
+                else None
+            ),
+            "num_players": self.num_players,
+            "state": self.state.value,
+            "current_card": (
+                self.current_card.to_dict() if self.current_card else None
+            ),
+            "previous_guesses": [[g[0], g[1]] for g in self.previous_guesses],
+            "message_log": list(self.message_log),
+            "winner": (
+                self.players.index(self.winner)
+                if self.winner is not None
+                else None
+            ),
+        }
+
+    @classmethod
+    def from_serialized(cls, data: Dict[str, Any]) -> "Board":
+        """Reconstruct a Board from its serialized representation."""
+        board = cls.__new__(cls)
+        board.deck = [Card.from_dict(c) for c in data["deck"]]
+        board.discard_pile = [Card.from_dict(c) for c in data["discard_pile"]]
+        board.num_cards = data["num_cards"]
+        board.players = [Player.deserialize(p) for p in data["players"]]
+        board.current_guesser = data["current_guesser"]
+        board.current_starter = data["current_starter"]
+        board.num_players = data["num_players"]
+        board.state = GameState(data["state"])
+        board.current_card = (
+            Card.from_dict(data["current_card"]) if data["current_card"] else None
+        )
+        board.previous_guesses = [(g[0], g[1]) for g in data["previous_guesses"]]
+        board.message_log = list(data["message_log"])
+        leader = data.get("current_leader")
+        board.current_leader = (
+            board.players[leader] if leader is not None else None
+        )
+        winner = data.get("winner")
+        board.winner = board.players[winner] if winner is not None else None
+        return board
 
     def get_game_state(self) -> Dict[str, Any]:
         """Return the full game state as a dictionary for serialization."""
@@ -250,10 +343,18 @@ class Board:
         """Create list of cards from the card list."""
         return [Card(desc, index) for desc, index in card_list]
 
-    def _initialise_players(self, player_names: List[str]) -> None:
+    def _initialise_players(
+        self, player_names: List[str], cpu_flags: Optional[List[bool]] = None
+    ) -> None:
         """Validate and create players, handling duplicate names."""
+        if cpu_flags is None:
+            cpu_flags = [False] * len(player_names)
+
         # Create Player objects
-        players = [Player(name) for name in player_names]
+        players = [
+            Player(name, bool(is_cpu))
+            for name, is_cpu in zip(player_names, cpu_flags)
+        ]
 
         names: Dict[str, int] = {}
         for player in players:

@@ -145,3 +145,7 @@ cython_debug/
 
 # Ignore tags file
 tags
+
+# Persisted game state
+game_state.json
+game_state.json.tmp

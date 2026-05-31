@@ -4,13 +4,38 @@ Pydantic models for the API request/response schemas.
 
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+
+class PlayerSpec(BaseModel):
+    name: str = Field("", description="Player name (may be blank for a default)")
+    is_cpu: bool = Field(False, description="Whether this slot is controlled by a CPU")
 
 
 class CreateGameRequest(BaseModel):
-    player_names: List[str] = Field(
-        ..., min_length=2, max_length=8, description="List of player names"
+    # Either provide a plain list of names (all human) ...
+    player_names: Optional[List[str]] = Field(
+        None, description="List of human player names"
     )
+    # ... or a structured list of slots that may include CPUs.
+    players: Optional[List[PlayerSpec]] = Field(
+        None, description="List of player slots (human or CPU)"
+    )
+
+    def resolved_players(self) -> List[PlayerSpec]:
+        """Return the effective list of player slots for this request."""
+        if self.players:
+            return self.players
+        if self.player_names:
+            return [PlayerSpec(name=name, is_cpu=False) for name in self.player_names]
+        return []
+
+    @model_validator(mode="after")
+    def _validate_player_count(self) -> "CreateGameRequest":
+        count = len(self.resolved_players())
+        if count < 2 or count > 8:
+            raise ValueError("A game must have between 2 and 8 players")
+        return self
 
 
 class JoinGameRequest(BaseModel):
@@ -42,6 +67,7 @@ class CardInfo(BaseModel):
 class PlayerInfo(BaseModel):
     name: str
     num_cards: int
+    is_cpu: bool = False
     hand: Optional[Dict[str, Any]] = None
 
 

@@ -27,7 +27,12 @@ class TestPlayer(unittest.TestCase):
     def test_to_dict_basic(self):
         p = Player("Alice")
         d = p.to_dict()
-        self.assertEqual(d, {"name": "Alice", "num_cards": 0})
+        self.assertEqual(d, {"name": "Alice", "num_cards": 0, "is_cpu": False})
+
+    def test_to_dict_cpu(self):
+        p = Player("Robo", is_cpu=True)
+        d = p.to_dict()
+        self.assertEqual(d, {"name": "Robo", "num_cards": 0, "is_cpu": True})
 
     def test_to_dict_with_hand(self):
         p = Player("Alice")

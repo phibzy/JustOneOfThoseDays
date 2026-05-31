@@ -40,3 +40,8 @@ class Card:
         if not hide_value:
             result["value"] = self.value
         return result
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Card":
+        """Reconstruct a Card from a dictionary produced by to_dict."""
+        return cls(data["desc"], data["value"])

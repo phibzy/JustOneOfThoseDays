@@ -18,9 +18,10 @@ class Player:
         name - the player's name (string)
     """
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, is_cpu: bool = False) -> None:
         self.__hand = Hand()
         self.__name = name
+        self.__is_cpu = is_cpu
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Player):
@@ -41,6 +42,14 @@ class Player:
     @name.setter
     def name(self, new_name: str) -> None:
         self.__name = new_name
+
+    @property
+    def is_cpu(self) -> bool:
+        return self.__is_cpu
+
+    @is_cpu.setter
+    def is_cpu(self, value: bool) -> None:
+        self.__is_cpu = value
 
     @property
     def num_cards(self) -> int:
@@ -68,7 +77,24 @@ class Player:
         result: dict = {
             "name": self.name,
             "num_cards": self.num_cards,
+            "is_cpu": self.is_cpu,
         }
         if include_hand:
             result["hand"] = self.hand.to_dict()
         return result
+
+    def serialize(self) -> dict:
+        """Return a fully persistable representation of the player."""
+        return {
+            "name": self.name,
+            "is_cpu": self.is_cpu,
+            "cards": [{"desc": c.desc, "value": c.value} for c in self.hand.cards],
+        }
+
+    @classmethod
+    def deserialize(cls, data: dict) -> "Player":
+        """Reconstruct a Player from its serialized representation."""
+        player = cls(data["name"], data.get("is_cpu", False))
+        for card_data in data.get("cards", []):
+            player.gain_card(Card(card_data["desc"], card_data["value"]))
+        return player

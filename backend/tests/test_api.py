@@ -11,10 +11,13 @@ from backend.game_manager import game_manager
 
 @pytest.fixture(autouse=True)
 def clear_games():
-    """Clear all games before each test."""
+    """Clear all games before each test and disable disk persistence."""
+    original_path = game_manager.storage_path
+    game_manager.storage_path = None
     game_manager._games.clear()
     yield
     game_manager._games.clear()
+    game_manager.storage_path = original_path
 
 
 @pytest.mark.asyncio
@@ -40,7 +43,43 @@ async def test_create_game_too_few_players():
 
 
 @pytest.mark.asyncio
-async def test_get_game_state():
+async def test_create_game_with_cpu():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.post(
+            "/api/game",
+            json={
+                "players": [
+                    {"name": "Alice", "is_cpu": False},
+                    {"name": "Robo", "is_cpu": True},
+                ]
+            },
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        # Only the human player should get a token (CPUs never connect).
+        assert list(data["player_tokens"].keys()) == ["Alice"]
+
+        # The human can fetch state and see the CPU flagged.
+        token = data["player_tokens"]["Alice"]
+        game_id = data["game_id"]
+        resp = await client.get(f"/api/game/{game_id}?token={token}")
+        assert resp.status_code == 200
+        state = resp.json()
+        cpu_players = [p for p in state["players"] if p["is_cpu"]]
+        assert len(cpu_players) == 1
+        assert cpu_players[0]["name"] == "Robo"
+
+
+@pytest.mark.asyncio
+async def test_create_game_all_cpu_too_few():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.post(
+            "/api/game",
+            json={"players": [{"name": "Robo", "is_cpu": True}]},
+        )
+        assert resp.status_code == 422
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # Create game
